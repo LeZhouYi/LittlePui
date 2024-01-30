@@ -28,14 +28,6 @@ def getFileName(file: str) -> str:
     return file.split(".")[0]
 
 
-def eventAdaptor(fun, **kwds):
-    """
-    fun:当前要绑定的方法
-    kwds:要传入的额外参数，需带参数名(eg. sudoku=sudoku)
-    """
-    return lambda event, fun=fun, kwds=kwds: fun(event, **kwds)
-
-
 def loadJsonByFile(filePath: str) -> None:
     """从文件中读取数据,基于项目根目录"""
     jsonData = None

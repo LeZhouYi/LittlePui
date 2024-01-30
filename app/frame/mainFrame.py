@@ -18,8 +18,10 @@ class MainFrame(BaseFrame):
     def __initBaseData(self) -> None:
         """初始化主窗口"""
         self.mainWindow = tk.Tk()
+        #基础配置
         self.mainWindow.geometry(self.getGeometry())
         self.mainWindow.title(self.getConfig().getData("windowTitle"))
+        #绑定相关事件
         self.mainWindow.protocol(WmEvent.WindowClose, self.onWindowClose)
         self.mainWindow.bind(Event.WindowResize,self.onWindowResize)
         self.mainWindow.bind(Event.MouseWheel,self.onMouseScroll)
@@ -43,11 +45,8 @@ class MainFrame(BaseFrame):
     #     #######渲染页面相关############
     def loadBaseFrame(self) -> None:
         """渲染基础框"""
-        sideBarFrame = tk.Frame(self.mainWindow, cnf=self.getCnf("sideBarFrame"))
-        contentFrame = tk.Frame(self.mainWindow, cnf=self.getCnf("contentFrame"))
-
-        self.cacheWidget(sideBarFrame, "baseWindow", "sideBarFrame")
-        self.cacheWidget(contentFrame, "baseWindow", "contentFrame")
+        self.createFrame("baseWindow","sideBarFrame")
+        self.createFrame("baseWindow","contentFrame")
 
     def loadPage(self)->None:
         """加载页面"""

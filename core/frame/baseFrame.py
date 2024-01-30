@@ -118,3 +118,57 @@ class BaseFrame:
         """记录窗口大小/位置"""
         self.getConfig().setData("windowSize", [width, height])
         self.getConfig().setData("windowPosition", [x, y])
+
+    def createFrame(self,parentKey:str,key:str,extra:dict=None)->tk.Frame:
+        """创建Frame"""
+        cnf = self.getCnf(key)
+        if cnf!=None and extra!=None:
+            cnf.update(extra)
+        frame = tk.Frame(self.getWidget(parentKey),cnf=cnf)
+        self.cacheWidget(frame,parentKey,key)
+        return self.getWidget(key)
+
+    def createLabel(self,parentKey:str,key:str,extra:dict=None)->tk.Label:
+        """创建Label"""
+        cnf = self.getCnf(key)
+        if cnf!=None and extra!=None:
+            cnf.update(extra)
+        label = tk.Label(self.getWidget(parentKey),cnf=cnf)
+        self.cacheWidget(label,parentKey,key)
+        return self.getWidget(key)
+
+    def createCanvas(self,parentKey:str,key:str,extra:dict=None)->tk.Canvas:
+        """创建Canvas"""
+        cnf = self.getCnf(key)
+        if cnf!=None and extra!=None:
+            cnf.update(extra)
+        label = tk.Canvas(self.getWidget(parentKey),cnf=cnf)
+        self.cacheWidget(label,parentKey,key)
+        return self.getWidget(key)
+
+    def createScrollBar(self,parentKey:str,key:str,extra:dict=None)->tk.Scrollbar:
+        """创建Scrollbar"""
+        cnf = self.getCnf(key)
+        if cnf!=None and extra!=None:
+            cnf.update(extra)
+        label = tk.Scrollbar(self.getWidget(parentKey),cnf=cnf)
+        self.cacheWidget(label,parentKey,key)
+        return self.getWidget(key)
+
+    def createEntry(self,parentKey:str,key:str,extra:dict=None)->tk.Entry:
+        """创建Entry"""
+        cnf = self.getCnf(key)
+        if cnf!=None and extra!=None:
+            cnf.update(extra)
+        label = tk.Entry(self.getWidget(parentKey),cnf=cnf)
+        self.cacheWidget(label,parentKey,key)
+        return self.getWidget(key)
+
+    def createDialog(self,parentKey:str,key:str,extra:dict=None)->tk.Toplevel:
+        """创建Dialog"""
+        cnf = self.getCnf(key)
+        if cnf!=None and extra!=None:
+            cnf.update(extra)
+        label = tk.Toplevel(self.getWidget(parentKey),cnf=cnf)
+        self.cacheWidget(label,parentKey,key)
+        return self.getWidget(key)

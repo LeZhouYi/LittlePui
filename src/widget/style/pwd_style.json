@@ -2,7 +2,7 @@
     "imports":[
         "src/widget/style/base_style.json"
     ],
-    "passwordBookBtn":{
+    "pwdBookBtn":{
         "cnf":{
             "width": 15,
             "height": 2,

@@ -11,8 +11,4 @@ class SideBarFrame(BaseFrame):
 
     def loadSideBarFrame(self,sideBarFrameKey:str)->None:
         """加载侧边栏"""
-        sideBarFrame = self.getWidget(sideBarFrameKey)
-        passwordBookBtn = tk.Label(
-            sideBarFrame,text="密码本",cnf=self.getStyle().getCnf("passwordBookBtn")
-        )
-        self.cacheWidget(passwordBookBtn, sideBarFrameKey, "passwordBookBtn")
+        self.createLabel(sideBarFrameKey,"pwdBookBtn",{"text":"密码本"})
