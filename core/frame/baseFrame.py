@@ -3,9 +3,9 @@ import tkinter as tk
 from core.config.config import Config
 from core.control.page import Page
 from core.control.style import Style
-from core.control.widgetControl import WidgetController
-from core.control.threadControl import ThreadController
-from core.control.sourceControl import ImageController
+from core.control.widget import WidgetController
+from core.control.thread import ThreadController
+from core.control.source import ImageController
 from core.control.controller import Controller
 
 
@@ -75,7 +75,7 @@ class BaseFrame:
         scrollCanvas.create_window(
             0,
             0,
-            width=self.getContentWidth() + self.getPage().resizeWidthOffset(),
+            width=self.getContentWidth(),
             window=contentFrame,
             anchor=tk.NW,
         )

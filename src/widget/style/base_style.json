@@ -1,0 +1,81 @@
+{
+    "$colorBase": "white",
+    "$colorTheme": "#ADD8E6",
+    "$colorText": "#1B5765",
+    "$colorThemeLight": "#C0DBF1",
+
+    "$fontSmall": ["微软雅黑", 15],
+    "$fontBase": ["微软雅黑", 16],
+    "$fontLarge": ["微软雅黑", 18],
+
+    "$cnfBase":{
+        "background": "$colorBase"
+    },
+    "$cnfBtnBase":{
+        "background": "$colorTheme",
+        "font": "$fontSmall",
+        "fg": "$colorBase"
+    },
+    "$cnfLabelBase":{
+        "background": "$colorTheme",
+        "font": "$fontBase",
+        "fg": "$colorBase"
+    },
+
+    "$packBothNW": {
+        "fill": "both",
+        "side": "left",
+        "anchor": "nw",
+        "expand": 1
+    },
+    "$packYLN":{
+        "fill": "y",
+        "side": "left",
+        "anchor": "n"
+    },
+    "$packXTC":{
+        "fill": "x",
+        "side": "top",
+        "anchor": "center"
+    },
+    "$packXTNW":{
+        "fill": "x",
+        "side": "top",
+        "anchor": "nw"
+    },
+    "$packXTW":{
+        "fill": "x",
+        "side": "top",
+        "anchor": "w"
+    },
+    "$packYLNE":{
+        "fill": "y",
+        "side": "right",
+        "anchor": "e"
+    },
+    "$packEMLNW":{
+        "fill": "none",
+        "side": "left",
+        "anchor": "nw"
+    },
+    "$packEMLW":{
+        "fill": "none",
+        "side": "left",
+        "anchor": "w"
+    },
+    "$packEMRC":{
+        "fill": "none",
+        "side": "right",
+        "anchor": "center"
+    },
+    "$packEMTC":{
+        "fill": "none",
+        "side": "top",
+        "anchor": "center"
+    },
+    "$packEMRE":{
+        "fill": "none",
+        "side": "right",
+        "anchor": "e"
+    }
+}

@@ -1,78 +1,12 @@
 {
-    "$colorBase": "white",
-    "$colorTheme": "#ADD8E6",
-    "$colorText": "#1B5765",
-    "$colorThemeLight": "#C0DBF1",
-
-    "$fontSmall": ["微软雅黑", 15],
-    "$fontBase": ["微软雅黑", 16],
-    "$fontLarge": ["微软雅黑", 18],
-
-    "$cnfBase":{
-        "background": "$colorBase"
-    },
-
-    "$packBothNW": {
-        "fill": "both",
-        "side": "left",
-        "anchor": "nw",
-        "expand": 1
-    },
-    "$packYLN":{
-        "fill": "y",
-        "side": "left",
-        "anchor": "n"
-    },
-    "$packXTC":{
-        "fill": "x",
-        "side": "top",
-        "anchor": "center"
-    },
-    "$packXTCW":{
-        "fill": "x",
-        "side": "top",
-        "anchor": "nw"
-    },
-    "$packYLNE":{
-        "fill": "y",
-        "side": "right",
-        "anchor": "e"
-    },
-    "$packEMLNW":{
-        "fill": "none",
-        "side": "left",
-        "anchor": "nw"
-    },
-    "$packEMRC":{
-        "fill": "none",
-        "side": "right",
-        "anchor": "center"
-    },
-    "$packEMTC":{
-        "fill": "none",
-        "side": "top",
-        "anchor": "center"
-    },
-
-    "baseWindow":{
-        "cnf": null,
-        "packCnf": null
-    },
-    "sideBarFrame":{
-        "cnf":"$cnfBase",
-        "packCnf": "$packYLN"
-    },
-    "contentFrame":{
-        "cnf":"$cnfBase",
-        "packCnf":"$packBothNW"
-    },
+    "imports":[
+        "src/widget/style/base_style.json"
+    ],
     "passwordBookBtn":{
         "cnf":{
             "width": 15,
             "height": 2,
-            "background": "$colorTheme",
-            "font": "$fontSmall",
-            "fg": "$colorBase"
+            "$ref": "$cnfBtnBase"
         },
         "packCnf":"$packXTC"
     },
@@ -103,9 +37,7 @@
     "pwdSingleFrame":{
         "cnf":"$cnfBase",
         "packCnf":{
-            "fill": "x",
-            "side": "top",
-            "anchor": "nw",
+            "$ref": "$packXTNW",
             "ipady":3
         }
     },
@@ -113,19 +45,15 @@
         "cnf":{
             "background": "$colorTheme"
         },
-        "packCnf":"$packXTCW"
+        "packCnf":"$packXTNW"
     },
     "pwdGroupLabel":{
         "cnf":{
-            "background": "$colorTheme",
-            "font": "$fontBase",
-            "fg": "$colorBase",
+            "$ref":"$cnfLabelBase",
             "anchor": "w"
         },
         "packCnf":{
-            "fill": "x",
-            "side": "top",
-            "anchor": "nw",
+            "$ref":"$packXTNW",
             "padx": 3,
             "pady": 5
         }
@@ -136,9 +64,7 @@
             "anchor": "center"
         },
         "packCnf":{
-            "fill": "none",
-            "side": "right",
-            "anchor": "center",
+            "$ref":"$packEMRC",
             "padx": 5,
             "pady": 5
         }
@@ -146,16 +72,14 @@
     "pwdEnvFrame":{
         "cnf":"$cnfBase",
         "packCnf":{
-            "fill": "x",
-            "side": "top",
-            "anchor": "nw",
+            "$ref":"$packXTNW",
             "padx": 1,
             "pady": 3
         }
     },
     "pwdEnvLineFrame":{
         "cnf":"$cnfBase",
-        "packCnf":"$packXTCW"
+        "packCnf":"$packXTNW"
     },
     "pwdEmptyLabel":{
         "cnf":{
@@ -168,20 +92,18 @@
     },
     "pwdEnvLabel":{
         "cnf":{
-            "background": "$colorTheme",
+            "$ref":"$cnfLabelBase",
             "font": "$fontLarge",
-            "fg": "$colorBase",
             "anchor": "w"
         },
-        "packCnf":"$packXTCW"
+        "packCnf":"$packXTNW"
     },
     "pwdEnvBtn":{
         "cnf":{
-            "background": "$colorTheme",
+            "$ref":"$cnfLabelBase",
             "font": "$fontLarge",
-            "fg": "$colorBase",
             "anchor": "center",
-            "height":23,
+            "height":20,
             "width": 25
         },
         "packCnf":"$packEMRC"
@@ -193,9 +115,7 @@
             "relief":"solid"
         },
         "packCnf":{
-            "fill": "x",
-            "side": "top",
-            "anchor": "nw",
+            "$ref":"$packXTNW",
             "padx": 1,
             "pady": 3
         }
@@ -203,9 +123,7 @@
     "pwdItemFrame":{
         "cnf":"$cnfBase",
         "packCnf":{
-            "fill": "x",
-            "side": "top",
-            "anchor": "nw",
+            "$ref":"$packXTNW",
             "padx": 1,
             "pady": 1
         }
@@ -219,9 +137,7 @@
             "fg":"$colorText"
         },
         "packCnf":{
-            "fill": "none",
-            "side": "left",
-            "anchor": "w",
+            "$ref":"$packEMLW",
             "padx": 1,
             "pady": 1
         }
@@ -234,24 +150,19 @@
             "fg": "$colorText"
         },
         "packCnf":{
-            "fill": "x",
-            "side": "top",
-            "anchor": "w",
+            "$ref":"$packXTW",
             "padx": 1,
             "pady": 1
         }
     },
     "pwdItemBtn":{
         "cnf":{
-            "background": "#ADD8E6",
-            "font": ["微软雅黑", 16],
-            "fg": "white",
+            "$ref":"$cnfBtnBase",
+            "font":"$fontBase",
             "anchor": "center"
         },
         "packCnf":{
-            "fill": "none",
-            "side": "right",
-            "anchor": "center",
+            "$ref":"$packEMRC",
             "padx": 5,
             "pady": 1
         }
@@ -264,9 +175,7 @@
             "fg": "$colorText"
         },
         "packCnf":{
-            "fill": "none",
-            "side": "left",
-            "anchor": "w",
+            "$ref":"$packEMLW",
             "padx": 3,
             "pady": 1
         }
@@ -309,11 +218,7 @@
             "width": 8,
             "height": 2
         },
-        "packCnf":{
-            "fill": "none",
-            "side": "left",
-            "anchor": "w"
-        }
+        "packCnf":"$packEMLW"
     },
     "pwdDelDlgNoBtn":{
         "cnf":{
@@ -324,10 +229,6 @@
             "width": 8,
             "height": 2
         },
-        "packCnf":{
-            "fill": "none",
-            "side": "right",
-            "anchor": "e"
-        }
+        "packCnf":"$packEMRE"
     }
 }

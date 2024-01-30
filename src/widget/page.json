@@ -1,6 +1,5 @@
 {
     "passwordDisplay":{
-        "keys":["pwdScrollCanvas","pwdContentFrame","pwdDispalyFrame"],
-        "widthOffset": 0
+        "keys":["pwdScrollCanvas","pwdContentFrame","pwdDispalyFrame"]
     }
 }

@@ -1,9 +1,9 @@
 from core.config.config import Config
 from core.control.page import Page
 from core.control.style import Style
-from core.control.widgetControl import WidgetController
-from core.control.threadControl import ThreadController
-from core.control.sourceControl import ImageController
+from core.control.widget import WidgetController
+from core.control.thread import ThreadController
+from core.control.source import ImageController
 
 
 class Controller:

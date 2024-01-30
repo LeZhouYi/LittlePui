@@ -1,0 +1,19 @@
+{
+    "imports":[
+        "src/widget/style/base_style.json",
+        "src/widget/style/pwd_style.json"
+    ],
+
+    "baseWindow":{
+        "cnf": null,
+        "packCnf": null
+    },
+    "sideBarFrame":{
+        "cnf":"$cnfBase",
+        "packCnf": "$packYLN"
+    },
+    "contentFrame":{
+        "cnf":"$cnfBase",
+        "packCnf":"$packBothNW"
+    }
+}

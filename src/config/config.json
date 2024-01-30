@@ -4,11 +4,11 @@
         777
     ],
     "windowPosition": [
-        2079,
-        122
+        2161,
+        237
     ],
     "windowTitle": "小笔记@Skily_Leyu",
-    "stylePath": "src/widget/style.json",
+    "stylePath": "src/widget/style/app_style.json",
     "pwdBookPath": "src/data/password_book.json",
     "pagePath": "src/widget/page.json",
     "nowPage": "passwordDisplay",
