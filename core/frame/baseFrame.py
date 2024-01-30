@@ -1,12 +1,12 @@
 import threading
 import tkinter as tk
-from config.config import Config
-from config.page import Page
-from control.style import Style
-from control.widgetControl import WidgetController
-from control.threadControl import ThreadController
-from control.sourceControl import ImageController
-from control.controller import Controller
+from core.config.config import Config
+from core.control.page import Page
+from core.control.style import Style
+from core.control.widgetControl import WidgetController
+from core.control.threadControl import ThreadController
+from core.control.sourceControl import ImageController
+from core.control.controller import Controller
 
 
 class BaseFrame:
@@ -16,11 +16,11 @@ class BaseFrame:
     def getConfig(self) -> Config:
         return self.__controller.getConfig()
 
-    def getWidgetController(self) -> WidgetController:
-        return self.__controller.getWidgetController()
+    def getWC(self) -> WidgetController:
+        return self.__controller.getWC()
 
-    def getThreadController(self) -> ThreadController:
-        return self.__controller.getThreadController()
+    def getTC(self) -> ThreadController:
+        return self.__controller.getTC()
 
     def getStyle(self) -> Style:
         return self.__controller.getStyle()
@@ -34,26 +34,26 @@ class BaseFrame:
     def getPage(self) -> Page:
         return self.__controller.getPage()
 
-    def getImageController(self) -> ImageController:
-        return self.__controller.getImageController()
+    def getIC(self) -> ImageController:
+        return self.__controller.getIC()
 
     def cacheImage(self, image: tk.PhotoImage, key: str, group: str):
         """缓存图片资源"""
-        self.getImageController().cacheImage(image, key, group)
+        self.getIC().cacheImage(image, key, group)
 
     def getImage(self, key: str, group: str) -> tk.PhotoImage:
         """获得图片"""
-        return self.getImageController().getImage(key, group)
+        return self.getIC().getImage(key, group)
 
     def cacheWidget(self, widget: tk.Widget, parentKey: str, key: str) -> None:
         """缓存控件"""
-        self.getWidgetController().cacheWidget(
+        self.getWC().cacheWidget(
             widget, parentKey, key, self.getPackCnf(key)
         )
 
     def getWidget(self, key: str) -> tk.Widget:
         """获取控件"""
-        return self.getWidgetController().getWidget(key)
+        return self.getWC().getWidget(key)
 
     def getController(self) -> Controller:
         return self.__controller
@@ -75,12 +75,17 @@ class BaseFrame:
         scrollCanvas.create_window(
             0,
             0,
-            width=self.getConfig().getContentPageWidth()
-            + self.getPage().resizeWidthOffset(),
+            width=self.getContentWidth() + self.getPage().resizeWidthOffset(),
             window=contentFrame,
             anchor=tk.NW,
         )
         self.updateCanvas(scrollCanvas, contentFrame, pageWidgetKeys[2])  # 更新
+
+    def getContentWidth(self) -> int:
+        """获取内容页宽度"""
+        return self.getConfig().getData("windowSize")[0] - self.getConfig().getData(
+            "sideBarWidth"
+        )
 
     def scrollCanvas(self, event, pageKey: str = None):
         """滚动当前页面"""
@@ -90,10 +95,26 @@ class BaseFrame:
 
     def cacheThread(self, func, key: str, args: tuple = ()):
         """缓存线程并执行"""
-        self.getThreadController().cacheThread(
+        self.getTC().cacheThread(
             threading.Thread(target=func, args=args, daemon=True), key
         )
 
-    def destroyWidget(self,key:str):
+    def destroyWidget(self, key: str):
         """清除该控件及子控件"""
-        self.getWidgetController().destroyWidget(key)
+        self.getWC().destroyWidget(key)
+
+    def getGeometry(self) -> str:
+        """获取窗口大小/位置"""
+        windowSize = self.getConfig().getData("windowSize")
+        windowPosition = self.getConfig().getData("windowPosition")
+        return "%dx%d+%d+%d" % (
+            windowSize[0],
+            windowSize[1],
+            windowPosition[0],
+            windowPosition[1],
+        )
+
+    def setGeometry(self, width: int, height: int, x: int, y: int) -> None:
+        """记录窗口大小/位置"""
+        self.getConfig().setData("windowSize", [width, height])
+        self.getConfig().setData("windowPosition", [x, y])

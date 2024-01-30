@@ -1,8 +1,5 @@
-import os
-import json
 import re
-from copy import deepcopy
-from utils import utils
+from core.utils import utils
 
 """控件相关个性配置"""
 

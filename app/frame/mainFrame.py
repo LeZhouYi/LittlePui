@@ -1,13 +1,14 @@
 import tkinter as tk
-from frame.baseFrame import BaseFrame
-from frame.sideBarFrame import SideBarFrame
-from frame.pwdBookFrame import PwdBookFrame
-from control.event import Event, WmEvent
-from control.controller import Controller
+from app.frame.sideBarFrame import SideBarFrame
+from app.frame.pwdBookFrame import PwdBookFrame
+from core.frame.baseFrame import BaseFrame
+from core.control.event import Event, WmEvent
+from core.control.controller import Controller
 
 class MainFrame(BaseFrame):
-    def __init__(self) -> None:
-        super().__init__(Controller())
+    def __init__(self,configFile:str) -> None:
+        super().__init__(Controller(configFile))
+        #初始化控件数据
         self.__initBaseData()
         self.loadBaseFrame()
         self.loadPage()
@@ -17,8 +18,8 @@ class MainFrame(BaseFrame):
     def __initBaseData(self) -> None:
         """初始化主窗口"""
         self.mainWindow = tk.Tk()
-        self.mainWindow.geometry(self.getConfig().getGeometry())
-        self.mainWindow.title(self.getConfig().getTitle())
+        self.mainWindow.geometry(self.getGeometry())
+        self.mainWindow.title(self.getConfig().getData("windowTitle"))
         self.mainWindow.protocol(WmEvent.WindowClose, self.onWindowClose)
         self.mainWindow.bind(Event.WindowResize,self.onWindowResize)
         self.mainWindow.bind(Event.MouseWheel,self.onMouseScroll)
@@ -34,7 +35,7 @@ class MainFrame(BaseFrame):
         x = self.mainWindow.winfo_rootx()
         y = self.mainWindow.winfo_rooty()
         # 备份窗口信息
-        self.getConfig().setGeometry(width, height, x, y)
+        self.setGeometry(width, height, x, y)
         self.getConfig().writeToFile()
         # 关闭窗口
         self.mainWindow.destroy()
@@ -56,18 +57,9 @@ class MainFrame(BaseFrame):
 
     def onWindowResize(self,event) -> None:
         """处理窗口刷新事件"""
-        # # 获取窗口的宽度和高度
-        # width = self.mainWindow.winfo_width()
-        # height = self.mainWindow.winfo_height()
-        # # 获取窗口左上角在屏幕上的位置
-        # x = self.mainWindow.winfo_rootx()
-        # y = self.mainWindow.winfo_rooty()
-        # if self.getConfig().hasWindowResize(width,height):
-        #     self.getConfig().setGeometry(width, height, x, y)
-        #     self.refreshCanvas()
 
     def onMouseScroll(self,event):
         """滚动事件"""
         x, y = self.mainWindow.winfo_pointerxy()
-        if x>self.mainWindow.winfo_rootx()+self.getConfig().getSideBarWidth():
+        if x>self.mainWindow.winfo_rootx()+self.getConfig().getData("sideBarWidth"):
             self.scrollCanvas(event)

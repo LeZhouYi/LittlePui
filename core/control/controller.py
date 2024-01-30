@@ -1,36 +1,45 @@
-from config.config import Config
-from config.page import Page
-from control.style import Style
-from control.widgetControl import WidgetController
-from control.threadControl import ThreadController
-from control.sourceControl import ImageController
+from core.config.config import Config
+from core.control.page import Page
+from core.control.style import Style
+from core.control.widgetControl import WidgetController
+from core.control.threadControl import ThreadController
+from core.control.sourceControl import ImageController
 
 
 class Controller:
     """控制模块集"""
 
-    def __init__(self) -> None:
-        self.config = Config()
-        self.style = Style(self.config.getStylePath())  # 样式配置
-        self.page = Page(self.config.getPagePath(), self.config.getNowPage())
+    def __init__(self, configFile: str) -> None:
+        # 初始化所有控制类
+        self.config = Config(configFile)
+        self.style = Style(self.config.getData("stylePath"))  # 样式配置
+        self.page = Page(
+            self.config.getData("pagePath"), self.config.getData("nowPage")
+        )
         self.widgetController = WidgetController()
         self.threadController = ThreadController()  # 线程池
         self.imageController = ImageController()
 
     def getConfig(self) -> Config:
+        """获取配置"""
         return self.config
 
-    def getWidgetController(self) -> WidgetController:
+    def getWC(self) -> WidgetController:
+        """获取控件池"""
         return self.widgetController
 
     def getStyle(self) -> Style:
+        """获取布局"""
         return self.style
 
     def getPage(self) -> Page:
+        """获取分页"""
         return self.page
 
-    def getThreadController(self) -> ThreadController:
+    def getTC(self) -> ThreadController:
+        """获取线程管理器"""
         return self.threadController
 
-    def getImageController(self) -> ImageController:
+    def getIC(self) -> ImageController:
+        """获取图像池"""
         return self.imageController

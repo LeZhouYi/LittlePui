@@ -1,4 +1,4 @@
-from app.mainFrame import MainFrame
+from app.frame.mainFrame import MainFrame
 
 if __name__ == "__main__":
-    MainFrame()
+    MainFrame("src/config/config.json")

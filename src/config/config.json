@@ -4,16 +4,16 @@
         777
     ],
     "windowPosition": [
-        2055,
-        201
+        2079,
+        122
     ],
     "windowTitle": "小笔记@Skily_Leyu",
-    "stylePath": "src/style.json",
-    "passwordBookPath": "src/password_book.json",
-    "pagePath": "src/page.json",
+    "stylePath": "src/widget/style.json",
+    "pwdBookPath": "src/data/password_book.json",
+    "pagePath": "src/widget/page.json",
     "nowPage": "passwordDisplay",
     "sideBarWidth": 165,
-    "pwdIconPath": "src/icon/pwdbook",
+    "pwdIconPath": "src/image/pwdbook",
     "pwdIconSize": [
         16,
         16

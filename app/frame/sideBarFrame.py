@@ -1,7 +1,6 @@
 import tkinter as tk
-from frame.baseFrame import BaseFrame
-from control.event import Event, WmEvent
-from control.controller import Controller
+from core.frame.baseFrame import BaseFrame
+from core.control.controller import Controller
 
 """侧边栏"""
 class SideBarFrame(BaseFrame):

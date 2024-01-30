@@ -31,10 +31,6 @@ class Page:
             return self.data[self.nowPage]["widthOffset"]
         return self.data[pageKey]["widthOffset"]
 
-    def setNowPage(self,nowPage:str)->None:
-        """设置当前页面"""
-        self.nowPage = nowPage
-
     def isNowPage(self,nowPage:str)->None:
         """是否是当前页面"""
         return self.nowPage==nowPage
