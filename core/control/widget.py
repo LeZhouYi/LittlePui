@@ -70,6 +70,10 @@ class WidgetController:
             self.__destroyWidget(keyItem)  # 销毁当前控件
         self.__destroyWidget(key)
 
+    def existWidget(self,key:str)->bool:
+        """判断是否存在控件"""
+        return key in self.widgetPool
+
     def __destroyWidget(self, key: str) -> None:
         """执行控件destory"""
         if key not in self.relations:

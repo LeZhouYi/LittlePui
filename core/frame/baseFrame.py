@@ -1,5 +1,6 @@
 import threading
 import tkinter as tk
+from time import sleep
 from core.config.config import Config
 from core.control.page import Page
 from core.control.style import Style
@@ -172,3 +173,8 @@ class BaseFrame:
         label = tk.Toplevel(self.getWidget(parentKey),cnf=cnf)
         self.cacheWidget(label,parentKey,key)
         return self.getWidget(key)
+
+    def replaceText(self, key: str, text: str):
+        """替换按钮文本"""
+        sleep(2)
+        self.getWidget(key).config(text=text)

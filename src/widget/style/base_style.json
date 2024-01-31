@@ -77,5 +77,10 @@
         "fill": "none",
         "side": "right",
         "anchor": "e"
+    },
+    "$packEMTW":{
+        "fill": "none",
+        "side": "top",
+        "anchor": "w"
     }
 }

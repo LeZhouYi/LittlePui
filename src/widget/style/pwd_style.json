@@ -230,5 +230,133 @@
             "height": 2
         },
         "packCnf":"$packEMRE"
+    },
+    "pwdEditGroupDialog":{
+        "cnf":{
+            "background": "$colorTheme",
+            "height": 252,
+            "width": 196
+        },
+        "packCnf": null
+    },
+    "pwdEditGroupFrame":{
+        "cnf":{
+            "background": "$colorBase",
+            "borderwidth": 40
+        },
+        "packCnf":{
+            "fill": "none",
+            "side": null,
+            "anchor": "center"
+        }
+    },
+    "pwdEditGroupLabel":{
+        "cnf":{
+            "background": "$colorBase",
+            "font": "$fontBase",
+            "fg": "$colorText",
+            "anchor": "w",
+            "height": 2
+        },
+        "packCnf":"$packEMTW"
+    },
+    "pwdEditGroupEntry":{
+        "cnf":{
+            "background": "$colorBase",
+            "font": "$fontBase",
+            "width": 8,
+            "fg": "$colorText"
+        },
+        "packCnf":{
+            "$ref":"$packXTW",
+            "padx": 1,
+            "pady": 1
+        }
+    },
+    "pwdEditGroupYesBtn":{
+        "cnf":{
+            "background": "$colorBase",
+            "font": "$fontBase",
+            "fg": "$colorText",
+            "anchor": "w",
+            "width": 8,
+            "height": 2
+        },
+        "packCnf":"$packEMLW"
+    },
+    "pwdEditGroupNoBtn":{
+        "cnf":{
+            "background": "$colorBase",
+            "font": "$fontBase",
+            "fg": "$colorText",
+            "anchor": "e",
+            "width": 8,
+            "height": 2
+        },
+        "packCnf":"$packEMRE"
+    },
+    "pwdEditEnvDialog":{
+        "cnf":{
+            "background": "$colorTheme",
+            "height": 252,
+            "width": 196
+        },
+        "packCnf": null
+    },
+    "pwdEditEnvFrame":{
+        "cnf":{
+            "background": "$colorBase",
+            "borderwidth": 40
+        },
+        "packCnf":{
+            "fill": "none",
+            "side": null,
+            "anchor": "center"
+        }
+    },
+    "pwdEditEnvLabel":{
+        "cnf":{
+            "background": "$colorBase",
+            "font": "$fontBase",
+            "fg": "$colorText",
+            "anchor": "w",
+            "height": 2
+        },
+        "packCnf":"$packEMTW"
+    },
+    "pwdEditEnvEntry":{
+        "cnf":{
+            "background": "$colorBase",
+            "font": "$fontBase",
+            "width": 8,
+            "fg": "$colorText"
+        },
+        "packCnf":{
+            "$ref":"$packXTW",
+            "padx": 1,
+            "pady": 1
+        }
+    },
+    "pwdEditEnvYesBtn":{
+        "cnf":{
+            "background": "$colorBase",
+            "font": "$fontBase",
+            "fg": "$colorText",
+            "anchor": "w",
+            "width": 8,
+            "height": 2
+        },
+        "packCnf":"$packEMLW"
+    },
+    "pwdEditEnvNoBtn":{
+        "cnf":{
+            "background": "$colorBase",
+            "font": "$fontBase",
+            "fg": "$colorText",
+            "anchor": "e",
+            "width": 8,
+            "height": 2
+        },
+        "packCnf":"$packEMRE"
     }
 }
