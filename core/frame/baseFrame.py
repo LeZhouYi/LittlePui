@@ -8,6 +8,7 @@ from core.control.widget import WidgetController
 from core.control.thread import ThreadController
 from core.control.source import ImageController
 from core.control.controller import Controller
+from core.utils import utils
 
 
 class BaseFrame:
@@ -48,9 +49,10 @@ class BaseFrame:
 
     def cacheWidget(self, widget: tk.Widget, parentKey: str, key: str) -> None:
         """缓存控件"""
-        self.getWC().cacheWidget(
-            widget, parentKey, key, self.getPackCnf(key)
-        )
+        cnf=self.getPackCnf(key)
+        if cnf!=None:
+            widget.pack_configure(cnf=cnf)
+        self.getWC().cacheWidget(widget, parentKey, key)
 
     def getWidget(self, key: str) -> tk.Widget:
         """获取控件"""
@@ -120,61 +122,80 @@ class BaseFrame:
         self.getConfig().setData("windowSize", [width, height])
         self.getConfig().setData("windowPosition", [x, y])
 
-    def createFrame(self,parentKey:str,key:str,extra:dict=None)->tk.Frame:
+    def createFrame(self, parentKey: str, key: str, extra: dict = None) -> tk.Frame:
         """创建Frame"""
         cnf = self.getCnf(key)
-        if cnf!=None and extra!=None:
+        if cnf != None and extra != None:
             cnf.update(extra)
-        frame = tk.Frame(self.getWidget(parentKey),cnf=cnf)
-        self.cacheWidget(frame,parentKey,key)
+        frame = tk.Frame(self.getWidget(parentKey), cnf=cnf)
+        self.cacheWidget(frame, parentKey, key)
         return self.getWidget(key)
 
-    def createLabel(self,parentKey:str,key:str,extra:dict=None)->tk.Label:
+    def createLabel(self, parentKey: str, key: str, extra: dict = None) -> tk.Label:
         """创建Label"""
         cnf = self.getCnf(key)
-        if cnf!=None and extra!=None:
+        if cnf != None and extra != None:
             cnf.update(extra)
-        label = tk.Label(self.getWidget(parentKey),cnf=cnf)
-        self.cacheWidget(label,parentKey,key)
+        label = tk.Label(self.getWidget(parentKey), cnf=cnf)
+        self.cacheWidget(label, parentKey, key)
         return self.getWidget(key)
 
-    def createCanvas(self,parentKey:str,key:str,extra:dict=None)->tk.Canvas:
+    def createCanvas(self, parentKey: str, key: str, extra: dict = None) -> tk.Canvas:
         """创建Canvas"""
         cnf = self.getCnf(key)
-        if cnf!=None and extra!=None:
+        if cnf != None and extra != None:
             cnf.update(extra)
-        label = tk.Canvas(self.getWidget(parentKey),cnf=cnf)
-        self.cacheWidget(label,parentKey,key)
+        label = tk.Canvas(self.getWidget(parentKey), cnf=cnf)
+        self.cacheWidget(label, parentKey, key)
         return self.getWidget(key)
 
-    def createScrollBar(self,parentKey:str,key:str,extra:dict=None)->tk.Scrollbar:
+    def createScrollBar(
+        self, parentKey: str, key: str, extra: dict = None
+    ) -> tk.Scrollbar:
         """创建Scrollbar"""
         cnf = self.getCnf(key)
-        if cnf!=None and extra!=None:
+        if cnf != None and extra != None:
             cnf.update(extra)
-        label = tk.Scrollbar(self.getWidget(parentKey),cnf=cnf)
-        self.cacheWidget(label,parentKey,key)
+        label = tk.Scrollbar(self.getWidget(parentKey), cnf=cnf)
+        self.cacheWidget(label, parentKey, key)
         return self.getWidget(key)
 
-    def createEntry(self,parentKey:str,key:str,extra:dict=None)->tk.Entry:
+    def createEntry(self, parentKey: str, key: str, extra: dict = None) -> tk.Entry:
         """创建Entry"""
         cnf = self.getCnf(key)
-        if cnf!=None and extra!=None:
+        if cnf != None and extra != None:
             cnf.update(extra)
-        label = tk.Entry(self.getWidget(parentKey),cnf=cnf)
-        self.cacheWidget(label,parentKey,key)
+        label = tk.Entry(self.getWidget(parentKey), cnf=cnf)
+        self.cacheWidget(label, parentKey, key)
         return self.getWidget(key)
 
-    def createDialog(self,parentKey:str,key:str,extra:dict=None)->tk.Toplevel:
+    def createDialog(self, parentKey: str, key: str, extra: dict = None) -> tk.Toplevel:
         """创建Dialog"""
         cnf = self.getCnf(key)
-        if cnf!=None and extra!=None:
+        if cnf != None and extra != None:
             cnf.update(extra)
-        label = tk.Toplevel(self.getWidget(parentKey),cnf=cnf)
-        self.cacheWidget(label,parentKey,key)
+        label = tk.Toplevel(self.getWidget(parentKey), cnf=cnf)
+        self.cacheWidget(label, parentKey, key)
         return self.getWidget(key)
+
+
 
     def replaceText(self, key: str, text: str):
         """替换按钮文本"""
         sleep(2)
         self.getWidget(key).config(text=text)
+
+    def createWidget(self, parentKey: str, key: str, extra: dict = None, *args) -> str:
+        """创建控件并返回该控件名"""
+        #获取配置数据并合并
+        cnf = self.getCnf(key)
+        if cnf != None and extra != None:
+            cnf.update(extra)
+        #获取构造方法并构造
+        widgetFunc = self.getStyle().getType(key)
+        widget = widgetFunc(self.getWidget(parentKey), cnf=cnf)
+        #创建唯一键名并缓存
+        widgetKey = utils.createKey(key, *args)
+        self.cacheWidget(widget, parentKey, widgetKey)
+        print(widgetKey)
+        return widgetKey

@@ -4,8 +4,9 @@ import json
 
 def createKey(key: str, *args) -> str:
     """创建Key"""
-    for value in args:
-        key = key + "_" + str(value)
+    if args.count:
+        for value in args:
+            key = key + "_" + str(value)
     return key
 
 

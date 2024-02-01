@@ -49,11 +49,38 @@ class PwdBookFrame(BaseFrame):
         )
 
     ###########控件事件################
+    def clickComfirmEnv(self,event, groupKey:str, envKey:str)->None:
+        """点击确认编辑Env"""
+        entry = self.getWidget("pwdEditEnvEntry")
+        entryText = entry.get()
+        if utils.isEmpty(entryText) or envKey == entryText:
+            self.closeDialog(event, "pwdEditEnvDialog")
+        if self.passwordBook.existEnv(groupKey,entryText):
+            self.getWidget("pwdEditEnvYesBtn").config(text="ENV已存在")
+            self.cacheThread(
+                self.replaceText, "pwdButton", ("pwdEditEnvYesBtn", "确定")
+            )
+        else:
+            #编辑并保存
+            self.passwordBook.editEnv(groupKey,envKey,entryText)
+            self.passwordBook.writeToFile()
+            #清理相关控件
+            pwdEnvFrameKey = utils.createKey("pwdEnvFrame", groupKey, envKey)
+            self.destroyWidget(pwdEnvFrameKey)
+            # 加载新控件
+            group = self.passwordBook.getGroup(groupKey)
+            pwdList = group[entryText]
+            self.loadSingleEnv(groupKey, entryText)
+            for pwdData in pwdList:
+                self.loadSingleData(groupKey, entryText, pwdData)
+            # 关闭弹窗
+            self.closeDialog(event, "pwdEditEnvDialog")
+
     def clickComfirmGroup(self, event, groupKey: str) -> None:
         """点击确认编辑组"""
         entry = self.getWidget("pwdEditGroupEntry")
         entryText = entry.get()
-        if utils.isEmpty(entryText) or groupKey == entry:
+        if utils.isEmpty(entryText) or groupKey == entryText:
             self.closeDialog(event, "pwdEditGroupDialog")
         if self.passwordBook.existGroup(entryText):
             self.getWidget("pwdEditGroupYesBtn").config(text="组已存在")
@@ -188,6 +215,46 @@ class PwdBookFrame(BaseFrame):
         )
 
     ###########渲染相关################
+    def loadAddGroupDialog(self, event)->None:
+        """加载添加组提示框"""
+        if self.getWC().existWidget("pwdAddGroupDialog"):
+            self.destroyWidget("pwdAddGroupDialog")
+
+        mainWindow = self.getWidget("baseWindow")
+        pwdEditGroupDialog = self.createDialog("baseWindow", "pwdAddGroupDialog")
+        self.createFrame("pwdAddGroupDialog", "pwdAddGroupFrame")
+        self.createLabel("pwdAddGroupFrame", "pwdAddGroupLabel", {"text": "请输入组名"})
+        pwdAddGroupEntry = self.createEntry("pwdAddGroupFrame", "pwdAddGroupEntry")
+        pwdAddGroupYesBtn = self.createLabel(
+            "pwdAddGroupFrame", "pwdAddGroupYesBtn", {"text": "确定"}
+        )
+        pwdAddGroupNoBtn = self.createLabel(
+            "pwdAddGroupFrame", "pwdAddGroupNoBtn", {"text": "取消"}
+        )
+
+        pwdEditGroupDialog.title("")
+        # 计算并使提示框显示居中
+        winX = (
+            mainWindow.winfo_rootx()
+            + (mainWindow.winfo_width() // 5)*2
+        )
+        winY = (
+            mainWindow.winfo_rooty()
+            + (mainWindow.winfo_height() // 5)*2
+        )
+        pwdEditGroupDialog.geometry("+{}+{}".format(winX, winY))
+
+        pwdAddGroupNoBtn.bind(
+            Event.MouseLeftClick,
+            eventAdaptor(self.closeDialog, dialogKey="pwdEditGroupDialog"),
+        )
+
+        # 禁用主窗口操作
+        mainWindow.update_idletasks()
+        pwdEditGroupDialog.transient(mainWindow)
+        pwdEditGroupDialog.grab_set()
+        mainWindow.wait_window(pwdEditGroupDialog)
+
     def loadEditEnvDialog(self, event, groupKey: str, envKey: str) -> None:
         """加载编辑Env提示框"""
         #清理旧缓存的控件
@@ -207,20 +274,22 @@ class PwdBookFrame(BaseFrame):
             "pwdEditEnvFrame", "pwdEditEnvNoBtn", {"text": "取消"}
         )
 
-        pwdEditEnvEntry.insert(tk.END, groupKey)
+        pwdEditEnvEntry.insert(tk.END, envKey)
         pwdEditEnvDialog.title("")
         # 计算并使提示框显示居中
         winX = (
             mainWindow.winfo_rootx()
-            + (mainWindow.winfo_width() // 2)
-            - (pwdEditEnvDialog.winfo_width() // 2)
+            + (mainWindow.winfo_width() // 5)*2
         )
         winY = (
             mainWindow.winfo_rooty()
-            + (mainWindow.winfo_height() // 2)
-            - (pwdEditEnvDialog.winfo_height() // 2)
+            + (mainWindow.winfo_height() // 5)*2
         )
         pwdEditEnvDialog.geometry("+{}+{}".format(winX, winY))
+        pwdEditEnvYesBtn.bind(
+            Event.MouseLeftClick,
+            eventAdaptor(self.clickComfirmEnv,groupKey=groupKey,envKey=envKey)
+        )
         pwdEditEnvNoBtn.bind(
             Event.MouseLeftClick,
             eventAdaptor(self.closeDialog, dialogKey="pwdEditEnvDialog"),
@@ -254,13 +323,11 @@ class PwdBookFrame(BaseFrame):
         # 计算并使提示框显示居中
         winX = (
             mainWindow.winfo_rootx()
-            + (mainWindow.winfo_width() // 2)
-            - (pwdEditGroupDialog.winfo_width() // 2)
+            + (mainWindow.winfo_width() // 5)*2
         )
         winY = (
             mainWindow.winfo_rooty()
-            + (mainWindow.winfo_height() // 2)
-            - (pwdEditGroupDialog.winfo_height() // 2)
+            + (mainWindow.winfo_height() // 5)*2
         )
         pwdEditGroupDialog.geometry("+{}+{}".format(winX, winY))
 
@@ -310,13 +377,11 @@ class PwdBookFrame(BaseFrame):
         # 计算并使提示框显示居中
         winX = (
             mainWindow.winfo_rootx()
-            + (mainWindow.winfo_width() // 2)
-            - (pwdDeleteDialog.winfo_width() // 2)
+            + (mainWindow.winfo_width() // 5)*2
         )
         winY = (
             mainWindow.winfo_rooty()
-            + (mainWindow.winfo_height() // 2)
-            - (pwdDeleteDialog.winfo_height() // 2)
+            + (mainWindow.winfo_height() // 5)*2
         )
         pwdDeleteDialog.geometry("+{}+{}".format(winX, winY))
 

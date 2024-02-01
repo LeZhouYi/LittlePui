@@ -2,13 +2,14 @@
     "imports":[
         "src/widget/style/base_style.json"
     ],
-    "pwdBookBtn":{
+    "sideBarBtn":{
         "cnf":{
             "width": 15,
             "height": 2,
             "$ref": "$cnfBtnBase"
         },
-        "packCnf":"$packXTC"
+        "packCnf":"$packXTC",
+        "type": "Label"
     },
     "pwdDispalyFrame":{
         "cnf":"$cnfBase",
@@ -349,6 +350,70 @@
         "packCnf":"$packEMLW"
     },
     "pwdEditEnvNoBtn":{
+        "cnf":{
+            "background": "$colorBase",
+            "font": "$fontBase",
+            "fg": "$colorText",
+            "anchor": "e",
+            "width": 8,
+            "height": 2
+        },
+        "packCnf":"$packEMRE"
+    },
+    "pwdAddGroupDialog":{
+        "cnf":{
+            "background": "$colorTheme",
+            "height": 252,
+            "width": 196
+        },
+        "packCnf": null
+    },
+    "pwdAddGroupFrame":{
+        "cnf":{
+            "background": "$colorBase",
+            "borderwidth": 40
+        },
+        "packCnf":{
+            "fill": "none",
+            "side": null,
+            "anchor": "center"
+        }
+    },
+    "pwdAddGroupLabel":{
+        "cnf":{
+            "background": "$colorBase",
+            "font": "$fontBase",
+            "fg": "$colorText",
+            "anchor": "w",
+            "height": 2
+        },
+        "packCnf":"$packEMTW"
+    },
+    "pwdAddGroupEntry":{
+        "cnf":{
+            "background": "$colorBase",
+            "font": "$fontBase",
+            "width": 8,
+            "fg": "$colorText"
+        },
+        "packCnf":{
+            "$ref":"$packXTW",
+            "padx": 1,
+            "pady": 1
+        }
+    },
+    "pwdAddGroupYesBtn":{
+        "cnf":{
+            "background": "$colorBase",
+            "font": "$fontBase",
+            "fg": "$colorText",
+            "anchor": "w",
+            "width": 8,
+            "height": 2
+        },
+        "packCnf":"$packEMLW"
+    },
+    "pwdAddGroupNoBtn":{
         "cnf":{
             "background": "$colorBase",
             "font": "$fontBase",

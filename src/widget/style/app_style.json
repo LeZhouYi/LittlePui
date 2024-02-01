@@ -10,10 +10,12 @@
     },
     "sideBarFrame":{
         "cnf":"$cnfBase",
-        "packCnf": "$packYLN"
+        "packCnf": "$packYLN",
+        "type":"Frame"
     },
     "contentFrame":{
         "cnf":"$cnfBase",
-        "packCnf":"$packBothNW"
+        "packCnf":"$packBothNW",
+        "type":"Frame"
     }
 }

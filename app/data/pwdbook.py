@@ -54,3 +54,15 @@ class PwdBook:
         if not self.existGroup(groupKey):
             raise Exception("组 %s 不存在" % groupKey)
         self.data[value]= deepcopy(self.data.pop(groupKey))
+
+    def existEnv(self, groupKey:str, envKey:str)->bool:
+        """是否存在Env"""
+        if self.existGroup(groupKey):
+            return envKey in self.data[groupKey]
+        return False
+
+    def editEnv(self,groupKey: str, envKey:str, value:str)->None:
+        """编辑ENV"""
+        if not self.existEnv(groupKey,envKey):
+            raise Exception("Env %s 不存在"%envKey)
+        self.data[groupKey][value] = deepcopy(self.data[groupKey].pop(envKey))

@@ -10,38 +10,11 @@ class WidgetController:
         self.widgetPool = {}  # 缓存控件池，键名：控件
         self.relations = {}  # 缓存控件的层级，键名：「子控件列表，布局」
 
-    def repackWidget(self, keys: list) -> None:
-        """重新安排布局"""
-        for key in keys:
-            self.getWidget(key).pack_forget()
-        for key in keys:
-            cnf = self.getCnf(key)
-            if cnf != None:
-                self.getWidget(key).pack(cnf=cnf)
-
-    def getCnf(self, key: str) -> dict:
-        """获取cnf"""
-        if key not in self.relations:
-            raise Exception("键名%s不存在" % key)
-        return self.relations[key]["packInfo"]
-
     def cacheWidget(
-        self, widget: tk.Widget, parentKey: str, key: str, cnf: dict
-    ) -> None:
+        self, widget: tk.Widget, parentKey: str, key: str) -> None:
         """缓存控件"""
-        if cnf != None:
-            widget.pack_configure(cnf)
         self.__cacheWidget(widget, key)
-        self.__cacheRelation(parentKey, key, cnf)
-
-    def cacheWidgetByGrid(
-        self, widget: tk.Widget, parentKey: str, key: str, cnf: dict
-    ) -> None:
-        """缓存控件"""
-        if cnf != None:
-            widget.grid(cnf)
-        self.__cacheWidget(widget, key)
-        self.__cacheRelation(parentKey, key, cnf)
+        self.__cacheRelation(parentKey, key)
 
     def getWidget(self, key: str) -> tk.Widget:
         """获取控件"""
@@ -91,7 +64,7 @@ class WidgetController:
         self.relations[key]["childs"] = []
         return childs
 
-    def __cacheRelation(self, parentKey: str, key: str, cnf) -> None:
+    def __cacheRelation(self, parentKey: str, key: str) -> None:
         """缓存控件层级和布局"""
         if parentKey != None:
             if parentKey not in self.relations:
@@ -99,7 +72,7 @@ class WidgetController:
             self.relations[parentKey]["childs"].append(key)  # 记录子控件
         if key in self.relations:
             raise Exception("键名%s已存在" % key)
-        self.relations[key] = {"childs": [], "packInfo": cnf}  # 初始化结构
+        self.relations[key] = {"childs": []}  # 初始化结构
 
     def __cacheWidget(self, widget: tk.Widget, key: str) -> None:
         """将控件添加进缓存池"""

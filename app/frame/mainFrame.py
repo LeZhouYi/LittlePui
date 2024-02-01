@@ -45,8 +45,8 @@ class MainFrame(BaseFrame):
     #     #######渲染页面相关############
     def loadBaseFrame(self) -> None:
         """渲染基础框"""
-        self.createFrame("baseWindow","sideBarFrame")
-        self.createFrame("baseWindow","contentFrame")
+        self.createWidget("baseWindow","sideBarFrame")
+        self.createWidget("baseWindow","contentFrame")
 
     def loadPage(self)->None:
         """加载页面"""

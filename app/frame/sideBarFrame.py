@@ -11,4 +11,4 @@ class SideBarFrame(BaseFrame):
 
     def loadSideBarFrame(self,sideBarFrameKey:str)->None:
         """加载侧边栏"""
-        self.createLabel(sideBarFrameKey,"pwdBookBtn",{"text":"密码本"})
+        self.createWidget(sideBarFrameKey,"sideBarBtn",{"text":"密码本"},"pwdBook")
