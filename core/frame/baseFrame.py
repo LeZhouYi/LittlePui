@@ -27,10 +27,16 @@ class BaseFrame:
     def getStyle(self) -> Style:
         return self.__controller.getStyle()
 
-    def getPackCnf(self, key) -> dict:
+    def getCnfData(self,key:str)->any:
+        """获取配置数据"""
+        return self.getConfig().getData(key)
+
+    def getPackCnf(self, key:str) -> dict:
+        """获取控件布局信息"""
         return self.getStyle().getPackCnf(key)
 
     def getCnf(self, key) -> dict:
+        """获取控件初始化信息"""
         return self.getStyle().getCnf(key)
 
     def getPage(self) -> Page:
@@ -86,7 +92,7 @@ class BaseFrame:
 
     def getContentWidth(self) -> int:
         """获取内容页宽度"""
-        return self.getConfig().getData("windowSize")[0] - self.getConfig().getData(
+        return self.getCnfData("windowSize")[0] - self.getCnfData(
             "sideBarWidth"
         )
 
@@ -108,8 +114,8 @@ class BaseFrame:
 
     def getGeometry(self) -> str:
         """获取窗口大小/位置"""
-        windowSize = self.getConfig().getData("windowSize")
-        windowPosition = self.getConfig().getData("windowPosition")
+        windowSize = self.getCnfData("windowSize")
+        windowPosition = self.getCnfData("windowPosition")
         return "%dx%d+%d+%d" % (
             windowSize[0],
             windowSize[1],
@@ -122,68 +128,11 @@ class BaseFrame:
         self.getConfig().setData("windowSize", [width, height])
         self.getConfig().setData("windowPosition", [x, y])
 
-    def createFrame(self, parentKey: str, key: str, extra: dict = None) -> tk.Frame:
-        """创建Frame"""
-        cnf = self.getCnf(key)
-        if cnf != None and extra != None:
-            cnf.update(extra)
-        frame = tk.Frame(self.getWidget(parentKey), cnf=cnf)
-        self.cacheWidget(frame, parentKey, key)
-        return self.getWidget(key)
-
-    def createLabel(self, parentKey: str, key: str, extra: dict = None) -> tk.Label:
-        """创建Label"""
-        cnf = self.getCnf(key)
-        if cnf != None and extra != None:
-            cnf.update(extra)
-        label = tk.Label(self.getWidget(parentKey), cnf=cnf)
-        self.cacheWidget(label, parentKey, key)
-        return self.getWidget(key)
-
-    def createCanvas(self, parentKey: str, key: str, extra: dict = None) -> tk.Canvas:
-        """创建Canvas"""
-        cnf = self.getCnf(key)
-        if cnf != None and extra != None:
-            cnf.update(extra)
-        label = tk.Canvas(self.getWidget(parentKey), cnf=cnf)
-        self.cacheWidget(label, parentKey, key)
-        return self.getWidget(key)
-
-    def createScrollBar(
-        self, parentKey: str, key: str, extra: dict = None
-    ) -> tk.Scrollbar:
-        """创建Scrollbar"""
-        cnf = self.getCnf(key)
-        if cnf != None and extra != None:
-            cnf.update(extra)
-        label = tk.Scrollbar(self.getWidget(parentKey), cnf=cnf)
-        self.cacheWidget(label, parentKey, key)
-        return self.getWidget(key)
-
-    def createEntry(self, parentKey: str, key: str, extra: dict = None) -> tk.Entry:
-        """创建Entry"""
-        cnf = self.getCnf(key)
-        if cnf != None and extra != None:
-            cnf.update(extra)
-        label = tk.Entry(self.getWidget(parentKey), cnf=cnf)
-        self.cacheWidget(label, parentKey, key)
-        return self.getWidget(key)
-
-    def createDialog(self, parentKey: str, key: str, extra: dict = None) -> tk.Toplevel:
-        """创建Dialog"""
-        cnf = self.getCnf(key)
-        if cnf != None and extra != None:
-            cnf.update(extra)
-        label = tk.Toplevel(self.getWidget(parentKey), cnf=cnf)
-        self.cacheWidget(label, parentKey, key)
-        return self.getWidget(key)
-
-
-
-    def replaceText(self, key: str, text: str):
-        """替换按钮文本"""
+    def replaceText(self, before:str ,key: str, after: str):
+        """替换按钮文本,用于提示错误信息并2秒后替换回原文"""
+        self.getWidget(key).config(text=before)
         sleep(2)
-        self.getWidget(key).config(text=text)
+        self.getWidget(key).config(text=after)
 
     def createWidget(self, parentKey: str, key: str, extra: dict = None, *args) -> str:
         """创建控件并返回该控件名"""
@@ -197,5 +146,34 @@ class BaseFrame:
         #创建唯一键名并缓存
         widgetKey = utils.createKey(key, *args)
         self.cacheWidget(widget, parentKey, widgetKey)
-        print(widgetKey)
         return widgetKey
+
+    def packCenter(self,mainWindow:tk.Widget,dialog:tk.Widget)->None:
+        """计算并使弹窗显示在主窗口中心"""
+        winX = (
+            mainWindow.winfo_rootx()
+            + (mainWindow.winfo_width() // 5)*2
+        )
+        winY = (
+            mainWindow.winfo_rooty()
+            + (mainWindow.winfo_height() // 5)*2
+        )
+        dialog.geometry("+{}+{}".format(winX, winY))
+
+    def packDialog(self,mainWindow:tk.Widget,dialog:tk.Widget)->None:
+        """禁用主窗口等待弹窗"""
+        mainWindow.update_idletasks()
+        dialog.transient(mainWindow)
+        dialog.grab_set()
+        mainWindow.wait_window(dialog)
+
+    def bindScroll(self,canvasKey:str,scrollKey:str,isVertical:bool=True,crement:int=5)->None:
+        """绑定滚动条"""
+        canvas = self.getWidget(canvasKey)
+        scrollBar = self.getWidget(scrollKey)
+        if isVertical:
+            canvas.config(yscrollcommand=scrollBar.set, yscrollincrement=crement)
+            scrollBar.config(command=canvas.yview)
+        else:
+            canvas.config(xscrollcommand=scrollBar.set, xscrollincrement=crement)
+            scrollBar.config(command=canvas.xview)

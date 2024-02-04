@@ -13,7 +13,8 @@
     },
     "pwdDispalyFrame":{
         "cnf":"$cnfBase",
-        "packCnf":"$packBothNW"
+        "packCnf":"$packBothNW",
+        "type": "Frame"
     },
     "pwdScrollCanvas":{
         "cnf":{
@@ -21,11 +22,13 @@
             "highlightthickness":0,
             "borderwidth":2
         },
-        "packCnf": "$packEMLNW"
+        "packCnf": "$packEMLNW",
+        "type": "Canvas"
     },
     "pwdContentFrame":{
         "cnf":"$cnfBase",
-        "packCnf": null
+        "packCnf": null,
+        "type": "Frame"
     },
     "pwdScrollBar":{
         "cnf":{
@@ -33,20 +36,23 @@
             "orient": "vertical",
             "width":1
         },
-        "packCnf":"$packYLNE"
+        "packCnf":"$packYLNE",
+        "type":"ScrollBar"
     },
     "pwdSingleFrame":{
         "cnf":"$cnfBase",
         "packCnf":{
             "$ref": "$packXTNW",
             "ipady":3
-        }
+        },
+        "type": "Frame"
     },
-    "pwdGroupLine":{
+    "pwdLine":{
         "cnf":{
             "background": "$colorTheme"
         },
-        "packCnf":"$packXTNW"
+        "packCnf":"$packXTNW",
+        "type": "Frame"
     },
     "pwdGroupLabel":{
         "cnf":{
@@ -57,9 +63,10 @@
             "$ref":"$packXTNW",
             "padx": 3,
             "pady": 5
-        }
+        },
+        "type": "Label"
     },
-    "pwdGroupBtn":{
+    "pwdBtn":{
         "cnf":{
             "background": "$colorTheme",
             "anchor": "center"
@@ -68,7 +75,8 @@
             "$ref":"$packEMRC",
             "padx": 5,
             "pady": 5
-        }
+        },
+        "type": "Label"
     },
     "pwdEnvFrame":{
         "cnf":"$cnfBase",
@@ -76,11 +84,13 @@
             "$ref":"$packXTNW",
             "padx": 1,
             "pady": 3
-        }
+        },
+        "type": "Frame"
     },
     "pwdEnvLineFrame":{
         "cnf":"$cnfBase",
-        "packCnf":"$packXTNW"
+        "packCnf":"$packXTNW",
+        "type": "Frame"
     },
     "pwdEmptyLabel":{
         "cnf":{
@@ -89,7 +99,8 @@
             "anchor": "w",
             "width": 3
         },
-        "packCnf":"$packEMLNW"
+        "packCnf":"$packEMLNW",
+        "type": "Label"
     },
     "pwdEnvLabel":{
         "cnf":{
@@ -97,7 +108,8 @@
             "font": "$fontLarge",
             "anchor": "w"
         },
-        "packCnf":"$packXTNW"
+        "packCnf":"$packXTNW",
+        "type": "Label"
     },
     "pwdEnvBtn":{
         "cnf":{
@@ -107,7 +119,8 @@
             "height":20,
             "width": 25
         },
-        "packCnf":"$packEMRC"
+        "packCnf":"$packEMRC",
+        "type": "Label"
     },
     "pwdDataFrame":{
         "cnf":{
@@ -119,7 +132,8 @@
             "$ref":"$packXTNW",
             "padx": 1,
             "pady": 3
-        }
+        },
+        "type": "Frame"
     },
     "pwdItemFrame":{
         "cnf":"$cnfBase",
@@ -127,7 +141,8 @@
             "$ref":"$packXTNW",
             "padx": 1,
             "pady": 1
-        }
+        },
+        "type": "Frame"
     },
     "pwdItemLabel":{
         "cnf":{
@@ -141,7 +156,8 @@
             "$ref":"$packEMLW",
             "padx": 1,
             "pady": 1
-        }
+        },
+        "type":"Label"
     },
     "pwdItemValue":{
         "cnf":{
@@ -154,7 +170,8 @@
             "$ref":"$packXTW",
             "padx": 1,
             "pady": 1
-        }
+        },
+        "type":"Entry"
     },
     "pwdItemBtn":{
         "cnf":{
@@ -166,7 +183,8 @@
             "$ref":"$packEMRC",
             "padx": 5,
             "pady": 1
-        }
+        },
+        "type": "Label"
     },
     "pwdValueLabel":{
         "cnf":{
@@ -179,17 +197,19 @@
             "$ref":"$packEMLW",
             "padx": 3,
             "pady": 1
-        }
+        },
+        "type":"Label"
     },
-    "pwdDeleteDialog":{
+    "pwdDialog":{
         "cnf":{
             "background": "$colorTheme",
             "height": 252,
             "width": 164
         },
-        "packCnf": null
+        "packCnf": null,
+        "type": "Dialog"
     },
-    "pwdDelDlgFrame":{
+    "pwdDlgFrame":{
         "cnf":{
             "background": "$colorBase",
             "borderwidth": 40
@@ -198,9 +218,10 @@
             "fill": "none",
             "side": null,
             "anchor": "center"
-        }
+        },
+        "type": "Frame"
     },
-    "pwdDelDlgLabel":{
+    "pwdDlgInfo":{
         "cnf":{
             "background": "$colorBase",
             "font": "$fontBase",
@@ -208,9 +229,21 @@
             "anchor": "center",
             "height": 2
         },
-        "packCnf":"$packEMTC"
+        "packCnf":"$packEMTW",
+        "type": "Label"
     },
-    "pwdDelDlgYesBtn":{
+    "pwdDlgLabel":{
+        "cnf":{
+            "background": "$colorBase",
+            "font": "$fontBase",
+            "fg": "$colorText",
+            "anchor": "center",
+            "height": 2
+        },
+        "packCnf":"$packEMTC",
+        "type": "Label"
+    },
+    "pwdDlgYesBtn":{
         "cnf":{
             "background": "$colorBase",
             "font": "$fontBase",
@@ -219,9 +252,10 @@
             "width": 8,
             "height": 2
         },
-        "packCnf":"$packEMLW"
+        "packCnf":"$packEMLW",
+        "type": "Label"
     },
-    "pwdDelDlgNoBtn":{
+    "pwdDlgNoBtn":{
         "cnf":{
             "background": "$colorBase",
             "font": "$fontBase",
@@ -230,38 +264,10 @@
             "width": 8,
             "height": 2
         },
-        "packCnf":"$packEMRE"
+        "packCnf":"$packEMRE",
+        "type":"Label"
     },
-    "pwdEditGroupDialog":{
-        "cnf":{
-            "background": "$colorTheme",
-            "height": 252,
-            "width": 196
-        },
-        "packCnf": null
-    },
-    "pwdEditGroupFrame":{
-        "cnf":{
-            "background": "$colorBase",
-            "borderwidth": 40
-        },
-        "packCnf":{
-            "fill": "none",
-            "side": null,
-            "anchor": "center"
-        }
-    },
-    "pwdEditGroupLabel":{
-        "cnf":{
-            "background": "$colorBase",
-            "font": "$fontBase",
-            "fg": "$colorText",
-            "anchor": "w",
-            "height": 2
-        },
-        "packCnf":"$packEMTW"
-    },
-    "pwdEditGroupEntry":{
+    "pwdDlgEntry":{
         "cnf":{
             "background": "$colorBase",
             "font": "$fontBase",
@@ -272,156 +278,7 @@
             "$ref":"$packXTW",
             "padx": 1,
             "pady": 1
-        }
-    },
-    "pwdEditGroupYesBtn":{
-        "cnf":{
-            "background": "$colorBase",
-            "font": "$fontBase",
-            "fg": "$colorText",
-            "anchor": "w",
-            "width": 8,
-            "height": 2
         },
-        "packCnf":"$packEMLW"
-    },
-    "pwdEditGroupNoBtn":{
-        "cnf":{
-            "background": "$colorBase",
-            "font": "$fontBase",
-            "fg": "$colorText",
-            "anchor": "e",
-            "width": 8,
-            "height": 2
-        },
-        "packCnf":"$packEMRE"
-    },
-    "pwdEditEnvDialog":{
-        "cnf":{
-            "background": "$colorTheme",
-            "height": 252,
-            "width": 196
-        },
-        "packCnf": null
-    },
-    "pwdEditEnvFrame":{
-        "cnf":{
-            "background": "$colorBase",
-            "borderwidth": 40
-        },
-        "packCnf":{
-            "fill": "none",
-            "side": null,
-            "anchor": "center"
-        }
-    },
-    "pwdEditEnvLabel":{
-        "cnf":{
-            "background": "$colorBase",
-            "font": "$fontBase",
-            "fg": "$colorText",
-            "anchor": "w",
-            "height": 2
-        },
-        "packCnf":"$packEMTW"
-    },
-    "pwdEditEnvEntry":{
-        "cnf":{
-            "background": "$colorBase",
-            "font": "$fontBase",
-            "width": 8,
-            "fg": "$colorText"
-        },
-        "packCnf":{
-            "$ref":"$packXTW",
-            "padx": 1,
-            "pady": 1
-        }
-    },
-    "pwdEditEnvYesBtn":{
-        "cnf":{
-            "background": "$colorBase",
-            "font": "$fontBase",
-            "fg": "$colorText",
-            "anchor": "w",
-            "width": 8,
-            "height": 2
-        },
-        "packCnf":"$packEMLW"
-    },
-    "pwdEditEnvNoBtn":{
-        "cnf":{
-            "background": "$colorBase",
-            "font": "$fontBase",
-            "fg": "$colorText",
-            "anchor": "e",
-            "width": 8,
-            "height": 2
-        },
-        "packCnf":"$packEMRE"
-    },
-    "pwdAddGroupDialog":{
-        "cnf":{
-            "background": "$colorTheme",
-            "height": 252,
-            "width": 196
-        },
-        "packCnf": null
-    },
-    "pwdAddGroupFrame":{
-        "cnf":{
-            "background": "$colorBase",
-            "borderwidth": 40
-        },
-        "packCnf":{
-            "fill": "none",
-            "side": null,
-            "anchor": "center"
-        }
-    },
-    "pwdAddGroupLabel":{
-        "cnf":{
-            "background": "$colorBase",
-            "font": "$fontBase",
-            "fg": "$colorText",
-            "anchor": "w",
-            "height": 2
-        },
-        "packCnf":"$packEMTW"
-    },
-    "pwdAddGroupEntry":{
-        "cnf":{
-            "background": "$colorBase",
-            "font": "$fontBase",
-            "width": 8,
-            "fg": "$colorText"
-        },
-        "packCnf":{
-            "$ref":"$packXTW",
-            "padx": 1,
-            "pady": 1
-        }
-    },
-    "pwdAddGroupYesBtn":{
-        "cnf":{
-            "background": "$colorBase",
-            "font": "$fontBase",
-            "fg": "$colorText",
-            "anchor": "w",
-            "width": 8,
-            "height": 2
-        },
-        "packCnf":"$packEMLW"
-    },
-    "pwdAddGroupNoBtn":{
-        "cnf":{
-            "background": "$colorBase",
-            "font": "$fontBase",
-            "fg": "$colorText",
-            "anchor": "e",
-            "width": 8,
-            "height": 2
-        },
-        "packCnf":"$packEMRE"
+        "type": "Entry"
     }
 }

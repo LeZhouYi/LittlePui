@@ -11,7 +11,10 @@ class TkinterMap:
         "Button": tk.Button,
         "Dialog": tk.Toplevel,
         "Label": tk.Label,
-        "Frame": tk.Frame
+        "Frame": tk.Frame,
+        "Canvas": tk.Canvas,
+        "ScrollBar": tk.Scrollbar,
+        "Entry": tk.Entry
     }
 
     def getWidgetFunc(key:str):

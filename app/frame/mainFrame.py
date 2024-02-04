@@ -20,7 +20,7 @@ class MainFrame(BaseFrame):
         self.mainWindow = tk.Tk()
         #基础配置
         self.mainWindow.geometry(self.getGeometry())
-        self.mainWindow.title(self.getConfig().getData("windowTitle"))
+        self.mainWindow.title(self.getCnfData("windowTitle"))
         #绑定相关事件
         self.mainWindow.protocol(WmEvent.WindowClose, self.onWindowClose)
         self.mainWindow.bind(Event.WindowResize,self.onWindowResize)
@@ -60,5 +60,5 @@ class MainFrame(BaseFrame):
     def onMouseScroll(self,event):
         """滚动事件"""
         x, y = self.mainWindow.winfo_pointerxy()
-        if x>self.mainWindow.winfo_rootx()+self.getConfig().getData("sideBarWidth"):
+        if x>self.mainWindow.winfo_rootx()+self.getCnfData("sideBarWidth"):
             self.scrollCanvas(event)

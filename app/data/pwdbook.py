@@ -27,6 +27,8 @@ class PwdBook:
         """新增组"""
         if groupKey not in self.data:
             self.data[groupKey] = {}
+        else:
+            raise Exception("组 %s 已存在"%groupKey)
 
     def deletetGroup(self, groupKey: str) -> None:
         """删除组及其数据"""
