@@ -143,13 +143,9 @@
     "cfmContent":{
         "cnf":{
             "background": "$colorBase",
-            "borderwidth": 5
+            "borderwidth": 1
         },
-        "packCnf":{
-            "fill": "none",
-            "side": null,
-            "anchor": "center"
-        },
+        "packCnf":"$packXTC",
         "type": "Frame"
     },
     "cfmInfo":{
@@ -162,5 +158,36 @@
         },
         "packCnf":"$packEMTW",
         "type": "Label"
+    },
+    "cfmLineFrame":{
+        "cnf":{
+            "background": "$colorBase"
+        },
+        "packCnf":"$packXTC",
+        "type": "Frame"
+    },
+    "cfmEntryLabel":{
+        "cnf":{
+            "background": "$colorBase",
+            "font": "$fontBase",
+            "fg": "$colorText",
+            "anchor": "center"
+        },
+        "packCnf":"$packEMLW",
+        "type": "Label"
+    },
+    "cfmEntry":{
+        "cnf":{
+            "background": "$colorBase",
+            "font": "$fontBase",
+            "width": 8,
+            "fg": "$colorText"
+        },
+        "packCnf":{
+            "$ref":"$packXTW",
+            "padx": 1,
+            "pady": 1
+        },
+        "type": "Entry"
     }
 }

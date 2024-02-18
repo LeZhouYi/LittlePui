@@ -8,8 +8,6 @@ from core.control.widget import WidgetController
 from core.control.thread import ThreadController
 from core.control.source import ImageController
 from core.control.controller import Controller
-from core.utils import utils
-
 
 class BaseFrame:
     def __init__(self, controller: Controller) -> None:
@@ -147,7 +145,7 @@ class BaseFrame:
         widgetFunc = self.getStyle().getType(key)
         widget = widgetFunc(self.getWidget(parentKey), cnf=cnf)
         #创建唯一键名并缓存
-        widgetKey = utils.createKey(key, *args)
+        widgetKey = self.createKey(key, *args)
         self.cacheWidget(widget, parentKey, widgetKey)
         return widgetKey
 
@@ -180,3 +178,10 @@ class BaseFrame:
         else:
             canvas.config(xscrollcommand=scrollBar.set, xscrollincrement=crement)
             scrollBar.config(command=canvas.xview)
+
+    def createKey(self,key: str, *args) -> str:
+        """创建Key"""
+        if args.count:
+            for value in args:
+                key = "%s_%s"%(key,str(value))
+        return key
