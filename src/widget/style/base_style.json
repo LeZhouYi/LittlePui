@@ -82,5 +82,85 @@
         "fill": "none",
         "side": "top",
         "anchor": "w"
+    },
+
+    "cfmDlg":{
+        "cnf":{
+            "background": "$colorTheme",
+            "height": 252,
+            "width": 164
+        },
+        "packCnf": null,
+        "type": "Dialog"
+    },
+    "cfmFrame":{
+        "cnf":{
+            "background": "$colorBase",
+            "borderwidth": 40
+        },
+        "packCnf":{
+            "fill": "none",
+            "side": null,
+            "anchor": "center"
+        },
+        "type": "Frame"
+    },
+    "cfmLabel":{
+        "cnf":{
+            "background": "$colorBase",
+            "font": "$fontBase",
+            "fg": "$colorText",
+            "anchor": "center",
+            "height": 2
+        },
+        "packCnf":"$packEMTC",
+        "type": "Label"
+    },
+    "cfmYesBtn":{
+        "cnf":{
+            "background": "$colorBase",
+            "font": "$fontBase",
+            "fg": "$colorText",
+            "anchor": "w",
+            "width": 8,
+            "height": 2
+        },
+        "packCnf":"$packEMLW",
+        "type": "Label"
+    },
+    "cfmNoBtn":{
+        "cnf":{
+            "background": "$colorBase",
+            "font": "$fontBase",
+            "fg": "$colorText",
+            "anchor": "e",
+            "width": 8,
+            "height": 2
+        },
+        "packCnf":"$packEMRE",
+        "type":"Label"
+    },
+    "cfmContent":{
+        "cnf":{
+            "background": "$colorBase",
+            "borderwidth": 5
+        },
+        "packCnf":{
+            "fill": "none",
+            "side": null,
+            "anchor": "center"
+        },
+        "type": "Frame"
+    },
+    "cfmInfo":{
+        "cnf":{
+            "background": "$colorBase",
+            "font": "$fontBase",
+            "fg": "$colorText",
+            "anchor": "center",
+            "height": 2
+        },
+        "packCnf":"$packEMTW",
+        "type": "Label"
     }
 }

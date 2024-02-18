@@ -15,6 +15,9 @@ class BaseFrame:
     def __init__(self, controller: Controller) -> None:
         self.__controller = controller  # 控制器
 
+    def getController(self)->Controller:
+        return self.__controller
+
     def getConfig(self) -> Config:
         return self.__controller.getConfig()
 

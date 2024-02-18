@@ -1,5 +1,5 @@
 import tkinter as tk
-from core.frame.baseFrame import BaseFrame
+from core.frame.absFrame import BaseFrame
 from core.control.controller import Controller
 
 """侧边栏"""

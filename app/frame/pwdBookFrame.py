@@ -6,7 +6,8 @@ from time import sleep
 from PIL import Image, ImageTk
 from core.utils import utils
 from app.data.pwdbook import PwdBook
-from core.frame.baseFrame import BaseFrame
+from core.frame.absFrame import BaseFrame
+from core.frame.absDialog import ComfirmDialog,InputDialog
 from core.control.event import Event, eventAdaptor
 from core.control.controller import Controller
 
@@ -17,6 +18,7 @@ class PwdBookFrame(BaseFrame):
     def __init__(self, controller: Controller) -> None:
         super().__init__(controller)
         self.passwordBook = PwdBook(self.getCnfData("pwdBookPath"))
+        self.delDialog = None #删除弹窗
         self.loadIcon()
         self.checkPwdData()
 
@@ -98,7 +100,7 @@ class PwdBookFrame(BaseFrame):
         self.passwordBook.deletetGroup(eventInfo["groupKey"])
         self.passwordBook.writeToFile()
         self.destroyWidget(eventInfo["widget"])
-        self.closeDialog(event, eventInfo["dialogKey"])
+        self.delDialog.closeDialog(event)
         self.updatePwdPage()
 
     def clickDeleteEnv(self, event, eventInfo: dict) -> None:
@@ -106,7 +108,7 @@ class PwdBookFrame(BaseFrame):
         self.passwordBook.deletetEnv(eventInfo["groupKey"], eventInfo["envKey"])
         self.passwordBook.writeToFile()
         self.destroyWidget(eventInfo["widget"])
-        self.closeDialog(event, eventInfo["dialogKey"])
+        self.delDialog.closeDialog(event)
         self.updatePwdPage()
 
     def clickDeletePwdData(self, event, eventInfo: dict) -> None:
@@ -116,7 +118,7 @@ class PwdBookFrame(BaseFrame):
         )
         self.passwordBook.writeToFile()
         self.destroyWidget(eventInfo["widget"])
-        self.closeDialog(event, eventInfo["dialogKey"])
+        self.delDialog.closeDialog(event)
         self.updatePwdPage()
 
     def closeDialog(self, event, dialogKey: str) -> None:
@@ -294,29 +296,10 @@ class PwdBookFrame(BaseFrame):
 
     def loadDeleteDialog(self,event,eventInfo: dict,) -> None:
         """加载删除提示框"""
-        self.destroyWidget("pwdDialog_del")
-        mainWindow = self.getWidget("baseWindow")
-        pwdDialogKey = self.createWidget("baseWindow", "pwdDialog_del")
-        pwdFrameKey = self.createWidget(pwdDialogKey, "pwdDlgFrame_del")
-        self.createWidget(pwdFrameKey, "pwdDlgLabel", {"text": "请确认是否删除"},"del")
-        dlgYesBtnKey = self.createWidget(pwdFrameKey,"pwdDlgYesBtn", {"text": "确定"},"del")
-        dlgNoBtnKey = self.createWidget(pwdFrameKey, "pwdDlgNoBtn", {"text": "取消"},"del")
-
-        pwdDialog = self.getWidget(pwdDialogKey)
-        pwdDialog.title("")
-        self.packCenter(mainWindow,pwdDialog)
-
-        eventInfo["dialogKey"] = pwdDialogKey
-        self.getWidget(dlgYesBtnKey).bind(
-            Event.MouseLeftClick,
-            eventAdaptor(eventInfo["method"], eventInfo=eventInfo),
-        )
-        self.getWidget(dlgNoBtnKey).bind(
-            Event.MouseLeftClick,
-            eventAdaptor(self.closeDialog, dialogKey=pwdDialogKey),
-        )
-        # 禁用主窗口操作
-        self.packDialog(mainWindow,pwdDialog)
+        self.delDialog = ComfirmDialog(self.getController(),"baseWindow","del")
+        self.delDialog.loadDialog(text="请确认是否删除")
+        self.delDialog.bindYesMethod(eventInfo["method"], eventInfo=eventInfo)
+        self.delDialog.packDialog()
 
     def loadPasswordNote(self, contentFrameKey: str) -> None:
         """加载密码本页面"""

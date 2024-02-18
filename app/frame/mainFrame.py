@@ -1,7 +1,7 @@
 import tkinter as tk
 from app.frame.sideBarFrame import SideBarFrame
 from app.frame.pwdBookFrame import PwdBookFrame
-from core.frame.baseFrame import BaseFrame
+from core.frame.absFrame import BaseFrame
 from core.control.event import Event, WmEvent
 from core.control.controller import Controller
 
