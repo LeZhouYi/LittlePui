@@ -17,8 +17,7 @@ class ComfirmDialog(BaseFrame):
 
     def bindYesMethod(self,func, **kwargs):
         """绑定确认控件点击方法"""
-        yesBtnKey = self.createKey("cfmYesBtn",self.suffix)
-        self.getWidget(yesBtnKey).bind(Event.MouseLeftClick,eventAdaptor(func,**kwargs))
+        self.bindClickMethod(self.getYesBtnKey(),func,**kwargs)
 
     def loadDialog(self,text:str):
         """加载弹窗"""
@@ -35,11 +34,7 @@ class ComfirmDialog(BaseFrame):
         pwdDialog = self.getWidget(dialogKey)
         pwdDialog.title("")
         self.packCenter(mainWindow,pwdDialog)
-
-        self.getWidget(noBtnKey).bind(
-            Event.MouseLeftClick,
-            self.closeDialog
-        )
+        self.bindClickMethod(noBtnKey,self.closeDialog)
 
     def getYesBtnKey(self)->str:
         """获取确认控件的Key"""
@@ -80,11 +75,7 @@ class InputDialog(ComfirmDialog):
         pwdDialog = self.getWidget(dialogKey)
         pwdDialog.title("")
         self.packCenter(mainWindow,pwdDialog)
-
-        self.getWidget(noBtnKey).bind(
-            Event.MouseLeftClick,
-            self.closeDialog
-        )
+        self.bindClickMethod(noBtnKey,self.closeDialog)
 
     def addEntry(self, key:str,labelText:str,value:str="")->None:
         """添加输入框及标签"""

@@ -153,8 +153,9 @@
             "background": "$colorBase",
             "font": "$fontBase",
             "fg": "$colorText",
-            "anchor": "center",
-            "height": 2
+            "anchor": "w",
+            "height": 2,
+            "width": 50
         },
         "packCnf":"$packEMTW",
         "type": "Label"
@@ -171,7 +172,8 @@
             "background": "$colorBase",
             "font": "$fontBase",
             "fg": "$colorText",
-            "anchor": "center"
+            "anchor": "e",
+            "width": 8
         },
         "packCnf":"$packEMLW",
         "type": "Label"

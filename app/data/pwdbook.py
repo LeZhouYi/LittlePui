@@ -1,5 +1,4 @@
-import os
-import json
+import datetime
 from copy import deepcopy
 from core.utils import utils
 
@@ -26,7 +25,7 @@ class PwdBook:
     def addGroup(self, groupKey: str) -> None:
         """新增组"""
         if groupKey not in self.data:
-            self.data[groupKey] = {}
+            self.data[groupKey] = {"default":[{"id":self.getTimeStamp(),"labels":[]}]}
         else:
             raise Exception("组 %s 已存在"%groupKey)
 
@@ -68,3 +67,23 @@ class PwdBook:
         if not self.existEnv(groupKey,envKey):
             raise Exception("Env %s 不存在"%envKey)
         self.data[groupKey][value] = deepcopy(self.data[groupKey].pop(envKey))
+
+    def addEnv(self,groupKey:str, value:str)->None:
+        """新增Env"""
+        if not self.existGroup(groupKey):
+            raise Exception("组 %s 不存在"%groupKey)
+        self.data[groupKey][value] = [{"id":self.getTimeStamp(),"labels":[]}]
+
+    def getTimeStamp(self)->str:
+        """获取时间戳"""
+        now = datetime.datetime.now()
+        return str(int(datetime.datetime.timestamp(now)))
+
+    def addData(self,groupKey:str,envKey:str,data:dict)->None:
+        """新增密码数据"""
+        if not self.existGroup(groupKey):
+            raise Exception("组 %s 不存在"%groupKey)
+        if not self.existEnv(groupKey,envKey):
+            raise Exception("Env %s 不存在"%envKey)
+        data["id"]=self.getTimeStamp()
+        self.data[groupKey][envKey].append(data)

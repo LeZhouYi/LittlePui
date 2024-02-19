@@ -8,6 +8,7 @@ from core.control.widget import WidgetController
 from core.control.thread import ThreadController
 from core.control.source import ImageController
 from core.control.controller import Controller
+from core.control.event import Event,eventAdaptor
 
 class BaseFrame:
     def __init__(self, controller: Controller) -> None:
@@ -164,6 +165,7 @@ class BaseFrame:
     def packDialog(self,mainWindow:tk.Widget,dialog:tk.Widget)->None:
         """禁用主窗口等待弹窗"""
         mainWindow.update_idletasks()
+        dialog.resizable(False,False)
         dialog.transient(mainWindow)
         dialog.grab_set()
         mainWindow.wait_window(dialog)
@@ -185,3 +187,7 @@ class BaseFrame:
             for value in args:
                 key = "%s_%s"%(key,str(value))
         return key
+
+    def bindClickMethod(self,key:str,method,**kwargs):
+        """绑定点击事件"""
+        self.getWidget(key).bind(Event.MouseLeftClick,eventAdaptor(method,**kwargs))

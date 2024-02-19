@@ -47,17 +47,50 @@ class PwdBookFrame(BaseFrame):
         return {"image": self.getImage(key, "pwdbookIcon")}
 
     ###########控件事件################
+    def clickAddData(self,event,groupKey:str,envKey:str)->None:
+        """点击确认添加数据"""
+        labelText = self.dialog.getEntryValue("labels")
+        if utils.isEmpty(labelText):
+            labelText = []
+        else:
+            labelText = labelText.split("、")
+        data = {
+            "account": self.dialog.getEntryValue("account"),
+            "password": self.dialog.getEntryValue("password"),
+            "website": self.dialog.getEntryValue("website"),
+            "labels": labelText
+        }
+        self.passwordBook.addData(groupKey,envKey,data)
+        self.passwordBook.writeToFile()
+        self.loadSingleData(groupKey,envKey,data)
+        self.dialog.closeDialog(event)
+        self.updatePwdPage()
+
+    def clickAddEnv(self,event,groupKey:str)->None:
+        """点击确认添加Env"""
+        entryText = self.dialog.getEntryValue("env")
+        if self.checkEnvEntry(self.dialog.getYesBtnKey(),groupKey,entryText):
+            #新增Env并保存
+            self.passwordBook.addEnv(groupKey,entryText)
+            self.passwordBook.writeToFile()
+            # 加载新控件
+            self.loadFullEnv(groupKey,entryText)
+            # 关闭弹窗
+            self.dialog.closeDialog(event)
+            self.updatePwdPage()
+
     def clickAddGroup(self,event)->None:
         """点击确认添加Group"""
-        entryText = self.getWidget("pwdDialog_addgroup").get()
-        if self.checkGroupEntry("pwdDlgYesBtn_addgroup",entryText):
-            # 编辑组并保存
+        entryText = self.dialog.getEntryValue("group")
+        if self.checkGroupEntry(self.dialog.getYesBtnKey(),entryText):
+            # 新增组并保存
             self.passwordBook.addGroup(entryText)
             self.passwordBook.writeToFile()
             # 加载新控件
-            self.loadSingleGroup(entryText)
+            self.loadFullGroup(entryText)
             # 关闭弹窗
-            self.closeDialog(event, "pwdDialog_editgroup")
+            self.dialog.closeDialog(event)
+            self.updatePwdPage()
 
     def clickComfirmEnv(self,event, groupKey:str, envKey:str)->None:
         """点击确认编辑Env"""
@@ -147,10 +180,7 @@ class PwdBookFrame(BaseFrame):
         packBtn = self.getWidget(packBtnKey)
         packBtn.configure(image=self.getImage("display", "pwdbookIcon"))
         packBtn.unbind(Event.MouseLeftClick)
-        packBtn.bind(
-            Event.MouseLeftClick,
-            eventAdaptor(self.clickDisplayGroup, groupKey=groupKey),
-        )
+        self.bindClickMethod(packBtnKey,self.clickDisplayGroup,groupKey=groupKey)
 
     def clickDisplayGroup(self, event, groupKey: str) -> None:
         """点击展开组内容"""
@@ -164,10 +194,7 @@ class PwdBookFrame(BaseFrame):
         packBtn = self.getWidget(packBtnKey)
         packBtn.configure(image=self.getImage("pack", "pwdbookIcon"))
         packBtn.unbind(Event.MouseLeftClick)
-        packBtn.bind(
-            Event.MouseLeftClick,
-            eventAdaptor(self.clickPackGroup, groupKey=groupKey),
-        )
+        self.bindClickMethod(packBtn,self.clickPackGroup, groupKey=groupKey)
 
     def clickPackEnv(self, event, groupKey: str, envkey: str) -> None:
         """点击关闭Env内容"""
@@ -182,10 +209,7 @@ class PwdBookFrame(BaseFrame):
         packBtn = self.getWidget(packBtnKey)
         packBtn.configure(image=self.getImage("pack", "pwdbookIcon"))
         packBtn.unbind(Event.MouseLeftClick)
-        packBtn.bind(
-            Event.MouseLeftClick,
-            eventAdaptor(self.clickDisplayEnv, groupKey=groupKey, envkey=envkey),
-        )
+        self.bindClickMethod(packBtnKey,self.clickDisplayEnv, groupKey=groupKey, envkey=envkey)
 
     def clickDisplayEnv(self, event, groupKey: str, envkey: str) -> None:
         """点击关闭Env内容"""
@@ -200,34 +224,35 @@ class PwdBookFrame(BaseFrame):
         packBtn = self.getWidget(packBtnKey)
         packBtn.configure(image=self.getImage("pack", "pwdbookIcon"))
         packBtn.unbind(Event.MouseLeftClick)
-        packBtn.bind(
-            Event.MouseLeftClick,
-            eventAdaptor(self.clickPackEnv, groupKey=groupKey, envkey=envkey),
-        )
+        self.bindClickMethod(packBtnKey,self.clickPackEnv, groupKey=groupKey, envkey=envkey)
 
     ###########渲染相关################
+    def loadAddDataDialog(self,event,groupKey:str,envKey:str)->None:
+        """加载添加密码数据提示框"""
+        self.dialog = InputDialog(self.getController(),"baseWindow","adddata")
+        self.dialog.loadDialog("请输入数据")
+        self.dialog.addEntry("account","account")
+        self.dialog.addEntry("password","password")
+        self.dialog.addEntry("website", "website")
+        self.dialog.addEntry("labels", "labels")
+        self.dialog.bindYesMethod(self.clickAddData,groupKey=groupKey,envKey=envKey)
+        self.dialog.packDialog()
+
+    def loadAddEnvDialog(self, event,groupKey:str)->None:
+        """加载添加Env提示框"""
+        self.dialog = InputDialog(self.getController(),"baseWindow","addenv")
+        self.dialog.loadDialog("请输入Env")
+        self.dialog.addEntry("env",None)
+        self.dialog.bindYesMethod(self.clickAddEnv,groupKey=groupKey)
+        self.dialog.packDialog()
+
     def loadAddGroupDialog(self, event)->None:
         """加载添加组提示框"""
-        self.destroyWidget("pwdDialog_addgroup")
-        #初始化布局
-        mainWindow = self.getWidget("baseWindow")
-        pwdDialogKey = self.createWidget("baseWindow", "pwdDialog_addgroup")
-        pwdFrameKey = self.createWidget(pwdDialogKey, "pwdDlgFrame",None,"addgroup")
-        self.createWidget(pwdFrameKey, "pwdDlgInfo", {"text": "请输入组名"},"addgroup")
-        pwdEntryKey = self.createWidget(pwdFrameKey, "pwdDlgEntry",None,"addgroup")
-        pwdYesBtnKey = self.createWidget(pwdFrameKey, "pwdDlgYesBtn", {"text": "确定"},"addgroup")
-        pwdNoBtnKey = self.createWidget(pwdFrameKey, "pwdDlgNoBtn", {"text": "取消"},"addgroup")
-        #弹窗配置
-        pwdDialog = self.getWidget(pwdDialogKey)
-        pwdDialog.title("")
-        self.packCenter(mainWindow,pwdDialog)
-        #绑定事件
-        self.getWidget(pwdNoBtnKey).bind(
-            Event.MouseLeftClick,
-            eventAdaptor(self.closeDialog, dialogKey=pwdDialogKey),
-        )
-        # 禁用主窗口操作
-        self.packDialog(mainWindow,pwdDialog)
+        self.dialog = InputDialog(self.getController(),"baseWindow","addgroup")
+        self.dialog.loadDialog("请输入组名")
+        self.dialog.addEntry("group",None)
+        self.dialog.bindYesMethod(self.clickAddGroup)
+        self.dialog.packDialog()
 
     def loadEditEnvDialog(self, event, groupKey: str, envKey: str) -> None:
         """加载编辑Env提示框"""
@@ -298,27 +323,15 @@ class PwdBookFrame(BaseFrame):
         delBtnKey = self.createWidget(lineFrameKey,"pwdBtn",self.getImgInfo("delete"),groupKey,"del")
         self.createWidget(lineFrameKey, "pwdGroupLabel", {"text": groupKey},groupKey)
         #绑定事件
-        self.getWidget(delBtnKey).bind(
-            Event.MouseLeftClick,
-            eventAdaptor(self.loadDeleteDialog,
+        self.bindClickMethod(delBtnKey,self.loadDeleteDialog,
                 eventInfo={
                     "groupKey": groupKey,
                     "widget": frameKey,
                     "method": self.clickDeleteGroup,
                 })
-        )
-        self.getWidget(packBtnKey).bind(
-            Event.MouseLeftClick,
-            eventAdaptor(self.clickPackGroup, groupKey=groupKey),
-        )
-        self.getWidget(editBtnKey).bind(
-            Event.MouseLeftClick,
-            eventAdaptor(self.loadEditGroupDialog, groupKey=groupKey),
-        )
-        self.getWidget(addBtnKey).bind(
-            Event.MouseLeftClick,
-            eventAdaptor(self.loadAddGroupDialog)
-        )
+        self.bindClickMethod(packBtnKey,self.clickPackGroup, groupKey=groupKey)
+        self.bindClickMethod(editBtnKey,self.loadEditGroupDialog, groupKey=groupKey)
+        self.bindClickMethod(addBtnKey,self.loadAddGroupDialog)
 
     def loadSingleEnv(self, groupKey: str, envkey: str) -> None:
         """加载特定Env"""
@@ -334,26 +347,16 @@ class PwdBookFrame(BaseFrame):
         delBtnKey = self.createWidget(lineFrameKey, "pwdEnvBtn",self.getImgInfo("delete"),envSuffix, "del")
         self.createWidget(lineFrameKey, "pwdEnvLabel", {"text": envkey},envSuffix)
 
-        self.getWidget(editBtnKey).bind(
-            Event.MouseLeftClick,
-            eventAdaptor(self.loadEditEnvDialog, groupKey=groupKey, envKey=envkey),
-        )
-        self.getWidget(delBtnKey).bind(
-            Event.MouseLeftClick,
-            eventAdaptor(
-                self.loadDeleteDialog,
+        self.bindClickMethod(editBtnKey,self.loadEditEnvDialog, groupKey=groupKey, envKey=envkey)
+        self.bindClickMethod(delBtnKey,self.loadDeleteDialog,
                 eventInfo={
                     "groupKey": groupKey,
                     "envKey": envkey,
                     "widget": frameKey,
                     "method": self.clickDeleteEnv,
-                },
-            ),
-        )
-        self.getWidget(packBtnKey).bind(
-            Event.MouseLeftClick,
-            eventAdaptor(self.clickPackEnv, groupKey=groupKey, envkey=envkey),
-        )
+                })
+        self.bindClickMethod(packBtnKey,self.clickPackEnv, groupKey=groupKey, envkey=envkey)
+        self.bindClickMethod(addBtnKey,self.loadAddEnvDialog, groupKey=groupKey)
 
     def loadSingleData(self, groupKey: str, envkey: str, pwdData: dict) -> None:
         """加载特定密码数据"""
@@ -370,21 +373,18 @@ class PwdBookFrame(BaseFrame):
                 if pwdKey == "labels":
                     for pwdLabel in pwdValue:
                         self.createWidget(frameKey,"pwdValueLabel",{"text": pwdLabel},pwdDataSuffix,pwdLabel)
+                    addBtnKey = self.createWidget(frameKey,"pwdItemBtn",self.getImgInfo("add"),pwdDataSuffix, "add")
                     editBtnKey = self.createWidget(frameKey,"pwdItemBtn",self.getImgInfo("edit"),pwdDataSuffix, "edit")
                     delBtnKey = self.createWidget(frameKey,"pwdItemBtn",self.getImgInfo("delete"),pwdDataSuffix, "del")
-                    self.getWidget(delBtnKey).bind(
-                        Event.MouseLeftClick,
-                        eventAdaptor(
-                            self.loadDeleteDialog,
+                    self.bindClickMethod(addBtnKey,self.loadAddDataDialog,groupKey=groupKey,envKey=envkey)
+                    self.bindClickMethod(delBtnKey,self.loadDeleteDialog,
                             eventInfo={
                                 "groupKey": groupKey,
                                 "envKey": envkey,
                                 "widget": dataFrameKey,
                                 "id": pwdDataId,
                                 "method": self.clickDeletePwdData,
-                            },
-                        ),
-                    )
+                            })
                 elif pwdKey == "website":
                     browerBtnKey = self.createWidget(frameKey,"pwdItemBtn",self.getImgInfo("browser"),pwdDataSuffix, "browser")
                     valueEntryKey = self.createWidget(frameKey,"pwdItemValue",None,pwdDataSuffix)
@@ -392,10 +392,7 @@ class PwdBookFrame(BaseFrame):
                     pwdItemValue = self.getWidget(valueEntryKey)
                     pwdItemValue.insert(tk.END, pwdValue)
                     pwdItemValue.config(state="readonly")
-                    self.getWidget(browerBtnKey).bind(
-                        Event.MouseLeftClick,
-                        eventAdaptor(self.clickBrowser, pwdData=pwdData),
-                    )
+                    self.bindClickMethod(browerBtnKey,self.clickBrowser, pwdData=pwdData)
                 else:
                     copyBtnKey = self.createWidget(frameKey,"pwdItemBtn",self.getImgInfo("copy"),pwdDataSuffix, "copy")
                     valueEntryKey = self.createWidget(frameKey,"pwdItemValue",None,pwdDataSuffix)
@@ -403,14 +400,7 @@ class PwdBookFrame(BaseFrame):
                     pwdItemValue = self.getWidget(valueEntryKey)
                     pwdItemValue.insert(tk.END, pwdValue)
                     pwdItemValue.config(state="readonly")
-                    self.getWidget(copyBtnKey).bind(
-                        Event.MouseLeftClick,
-                        eventAdaptor(
-                            self.clickCopy,
-                            text=pwdValue,
-                            btnKey=copyBtnKey,
-                        ),
-                    )
+                    self.bindClickMethod(copyBtnKey,self.clickCopy,text=pwdValue,btnKey=copyBtnKey)
 
     def updatePwdPage(self) -> None:
         """更新当前页面"""
