@@ -41,6 +41,10 @@ class ComfirmDialog(BaseFrame):
             self.closeDialog
         )
 
+    def getYesBtnKey(self)->str:
+        """获取确认控件的Key"""
+        return self.createKey("cfmYesBtn",self.suffix)
+
     def packDialog(self) -> None:
         """禁用主窗口操作"""
         mainWindow = self.getWidget(self.parentKey)
@@ -58,7 +62,7 @@ class InputDialog(ComfirmDialog):
 
     def __init__(self, controller: Controller, parentKey: str, suffix: str) -> None:
         super().__init__(controller, parentKey, suffix)
-        self.keySet = []
+        self.keySet = {}
 
     def loadDialog(self, text: str)->None:
         """加载弹窗"""
@@ -94,12 +98,15 @@ class InputDialog(ComfirmDialog):
         entryKey = self.createWidget(lineFrameKey,"cfmEntry",None,suffixKey)
         self.getWidget(entryKey).insert(tk.END,value)
         #备份Key
-        self.addKey(key)
+        self.addKey(key,entryKey)
 
-    def addKey(self,key:str)->None:
+    def addKey(self,key:str,widgetKey:str)->None:
         """添加键"""
         if key not in self.keySet:
-            self.keySet.append(key)
+            self.keySet[key]=widgetKey
 
     def getEntryValue(self,key:str)->str:
         """获取输入框的值"""
+        if key not in self.keySet:
+            raise Exception("键名%s不存在" % key)
+        return self.getWidget(self.keySet[key]).get()

@@ -61,10 +61,10 @@ class PwdBookFrame(BaseFrame):
 
     def clickComfirmEnv(self,event, groupKey:str, envKey:str)->None:
         """点击确认编辑Env"""
-        entryText = self.getWidget("pwdDlgEntry_editenv").get()
-        if self.checkEnvEntry("pwdDlgYesBtn_editenv",groupKey,entryText):
+        entryText = self.dialog.getEntryValue("env")
+        if self.checkEnvEntry(self.dialog.getYesBtnKey(),groupKey,entryText):
             if envKey == entryText:
-                self.closeDialog(event, "pwdDialog_editenv")
+                self.dialog.closeDialog(event)
             else:
                 #编辑并保存
                 self.passwordBook.editEnv(groupKey,envKey,entryText)
@@ -75,14 +75,14 @@ class PwdBookFrame(BaseFrame):
                 # 加载新控件
                 self.loadFullEnv(groupKey,entryText)
                 # 关闭弹窗
-                self.closeDialog(event, "pwdDialog_editenv")
+                self.dialog.closeDialog(event)
 
     def clickComfirmGroup(self, event, groupKey: str) -> None:
         """点击确认编辑组"""
-        entryText = self.getWidget("pwdDlgEntry_editgroup").get()
-        if self.checkGroupEntry("pwdDlgYesBtn_editgroup",entryText):
+        entryText = self.dialog.getEntryValue("group")
+        if self.checkGroupEntry(self.dialog.getYesBtnKey(),entryText):
             if groupKey == entryText:
-                self.closeDialog(event, "pwdDialog_editgroup")
+                self.dialog.closeDialog(event)
             else:
                 # 编辑组并保存
                 self.passwordBook.editGroup(groupKey, entryText)
@@ -93,7 +93,7 @@ class PwdBookFrame(BaseFrame):
                 # 加载新控件
                 self.loadFullGroup(entryText)
                 # 关闭弹窗
-                self.closeDialog(event, "pwdDialog_editgroup")
+                self.dialog.closeDialog(event)
 
     def clickDeleteGroup(self, event, eventInfo: dict) -> None:
         """点击删除组事件"""
@@ -234,37 +234,16 @@ class PwdBookFrame(BaseFrame):
         self.dialog = InputDialog(self.getController(),"baseWindow","editenv")
         self.dialog.loadDialog("请输入Env名")
         self.dialog.addEntry("env",None,envKey)
-        self.dialog.packDialog()
         self.dialog.bindYesMethod(self.clickComfirmEnv,groupKey=groupKey,envKey=envKey)
+        self.dialog.packDialog()
 
     def loadEditGroupDialog(self, event, groupKey: str) -> None:
         """加载编辑组提示框"""
-        self.destroyWidget("pwdDialog_editgroup")
-
-        mainWindow = self.getWidget("baseWindow")
-        dialogKey = self.createWidget("baseWindow", "pwdDialog",None,"editgroup")
-        frameKey = self.createWidget(dialogKey, "pwdDlgFrame",None,"editgroup")
-        self.createWidget(frameKey, "pwdDlgInfo", {"text": "请输入组名"},"editgroup")
-        entryKey = self.createWidget(frameKey, "pwdDlgEntry",None,"editgroup")
-        dlgYesBtnKey = self.createWidget(frameKey,"pwdDlgYesBtn", {"text": "确定"},"editgroup")
-        dlgNoBtnKey = self.createWidget(frameKey, "pwdDlgNoBtn", {"text": "取消"},"editgroup")
-
-        self.getWidget(entryKey).insert(tk.END, groupKey)
-        pwdDialog = self.getWidget(dialogKey)
-        pwdDialog.title("")
-        self.packCenter(mainWindow,pwdDialog)
-
-        self.getWidget(dlgNoBtnKey).bind(
-            Event.MouseLeftClick,
-            eventAdaptor(self.closeDialog, dialogKey=dialogKey),
-        )
-        self.getWidget(dlgYesBtnKey).bind(
-            Event.MouseLeftClick,
-            eventAdaptor(self.clickComfirmGroup, groupKey=groupKey),
-        )
-
-        # 禁用主窗口操作
-        self.packDialog(mainWindow,pwdDialog)
+        self.dialog = InputDialog(self.getController(),"baseWindow","editgroup")
+        self.dialog.loadDialog("请输入组名")
+        self.dialog.addEntry("group",None,groupKey)
+        self.dialog.bindYesMethod(self.clickComfirmGroup, groupKey=groupKey)
+        self.dialog.packDialog()
 
     def completeBtn(self, btnKey: str, controlKey: str) -> None:
         """点击按钮成功效果"""
