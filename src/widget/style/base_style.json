@@ -33,6 +33,11 @@
         "side": "left",
         "anchor": "n"
     },
+    "$packYLC":{
+        "fill": "y",
+        "side": "left",
+        "anchor": "center"
+    },
     "$packXTC":{
         "fill": "x",
         "side": "top",

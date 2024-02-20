@@ -17,5 +17,30 @@
         "cnf":"$cnfBase",
         "packCnf":"$packBothNW",
         "type":"Frame"
+    },
+    "sepVerti":{
+        "cnf":{
+            "background": "#7998B4",
+            "width": 3
+        },
+        "packCnf":{
+            "$ref": "$packYLC",
+            "padx": 3,
+            "pady": 3
+        },
+        "type":"Frame"
+    },
+    "sideBarBtn":{
+        "cnf":{
+            "width": 15,
+            "height": 2,
+            "$ref": "$cnfBtnBase"
+        },
+        "packCnf":{
+            "$ref": "$packXTC",
+            "padx": 3,
+            "pady": 5
+        },
+        "type": "Label"
     }
 }

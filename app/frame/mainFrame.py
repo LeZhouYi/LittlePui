@@ -19,14 +19,16 @@ class MainFrame(BaseFrame):
         """初始化主窗口"""
         self.mainWindow = tk.Tk()
         #基础配置
+        self.mainWindow.config(background="white")
         self.mainWindow.geometry(self.getGeometry())
         self.mainWindow.title(self.getCnfData("windowTitle"))
         #绑定相关事件
         self.mainWindow.protocol(WmEvent.WindowClose, self.onWindowClose)
-        self.mainWindow.bind(Event.WindowResize,self.onWindowResize)
         self.mainWindow.bind(Event.MouseWheel,self.onMouseScroll)
         # 缓存控件
         self.cacheWidget(self.mainWindow, None, "baseWindow")
+
+    #     #######控件事件相关############
 
     def onWindowClose(self) -> None:
         """处理窗口关闭事件"""
@@ -46,16 +48,16 @@ class MainFrame(BaseFrame):
     def loadBaseFrame(self) -> None:
         """渲染基础框"""
         self.createWidget("baseWindow","sideBarFrame")
+        self.createWidget("baseWindow","sepVerti",None,"baseWindow")
         self.createWidget("baseWindow","contentFrame")
 
     def loadPage(self)->None:
         """加载页面"""
+        self.sideBar = SideBarFrame(self.getController())
         if self.getPage().isNowPage("passwordDisplay"):
-            SideBarFrame(self.getController()).loadSideBarFrame("sideBarFrame")
-            PwdBookFrame(self.getController()).loadPasswordNote("contentFrame")
-
-    def onWindowResize(self,event) -> None:
-        """处理窗口刷新事件"""
+            self.sideBar.loadSideBarFrame("sideBarFrame")
+            self.pwdBookFrame = PwdBookFrame(self.getController())
+            self.pwdBookFrame.loadPasswordNote("contentFrame")
 
     def onMouseScroll(self,event):
         """滚动事件"""

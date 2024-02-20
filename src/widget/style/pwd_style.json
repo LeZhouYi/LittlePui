@@ -2,15 +2,6 @@
     "imports":[
         "src/widget/style/base_style.json"
     ],
-    "sideBarBtn":{
-        "cnf":{
-            "width": 15,
-            "height": 2,
-            "$ref": "$cnfBtnBase"
-        },
-        "packCnf":"$packXTC",
-        "type": "Label"
-    },
     "pwdDispalyFrame":{
         "cnf":"$cnfBase",
         "packCnf":"$packBothNW",
@@ -22,7 +13,11 @@
             "highlightthickness":0,
             "borderwidth":2
         },
-        "packCnf": "$packEMLNW",
+        "packCnf": {
+            "$ref": "$packEMLNW",
+            "pady": 5,
+            "padx": 5
+        },
         "type": "Canvas"
     },
     "pwdContentFrame":{
