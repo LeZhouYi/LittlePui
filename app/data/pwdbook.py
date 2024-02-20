@@ -86,4 +86,22 @@ class PwdBook:
         if not self.existEnv(groupKey,envKey):
             raise Exception("Env %s 不存在"%envKey)
         data["id"]=self.getTimeStamp()
-        self.data[groupKey][envKey].append(data)
+        self.data[groupKey][envKey].append(deepcopy(data))
+
+    def editData(self,groupKey:str,envKey:str,data:dict)->None:
+        """编辑密码数据"""
+        if not self.existGroup(groupKey):
+            raise Exception("组 %s 不存在"%groupKey)
+        if not self.existEnv(groupKey,envKey):
+            raise Exception("Env %s 不存在"%envKey)
+        if data==None or "id" not in data:
+            raise Exception("数据 %s 不存在键 id"% data)
+        dataList = self.data[groupKey][envKey]
+        index = -1
+        for i in range(len(dataList)):
+            if dataList[i]["id"]==data["id"]:
+                index=i
+                break
+        if index == -1:
+            raise Exception("数据id %s 不存在"% data["id"])
+        self.data[groupKey][envKey][index]= deepcopy(data)

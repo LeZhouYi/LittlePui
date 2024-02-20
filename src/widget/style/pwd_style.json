@@ -43,7 +43,7 @@
         "cnf":"$cnfBase",
         "packCnf":{
             "$ref": "$packXTNW",
-            "ipady":3
+            "ipady":8
         },
         "type": "Frame"
     },
@@ -62,7 +62,7 @@
         "packCnf":{
             "$ref":"$packXTNW",
             "padx": 3,
-            "pady": 5
+            "pady": 8
         },
         "type": "Label"
     },
@@ -83,7 +83,7 @@
         "packCnf":{
             "$ref":"$packXTNW",
             "padx": 1,
-            "pady": 3
+            "pady": 5
         },
         "type": "Frame"
     },

@@ -87,7 +87,8 @@ class InputDialog(ComfirmDialog):
         if labelText!=None:
             self.createWidget(lineFrameKey,"cfmEntryLabel",{"text":labelText},suffixKey)
         entryKey = self.createWidget(lineFrameKey,"cfmEntry",None,suffixKey)
-        self.getWidget(entryKey).insert(tk.END,value)
+        if value!=None:
+            self.getWidget(entryKey).insert(tk.END,value)
         #备份Key
         self.addKey(key,entryKey)
 
