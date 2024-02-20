@@ -188,6 +188,12 @@ class BaseFrame:
                 key = "%s_%s"%(key,str(value))
         return key
 
-    def bindClickMethod(self,key:str,method,**kwargs):
+    def bindClickMethod(self,key:str,method,**kwargs)->None:
         """绑定点击事件"""
         self.getWidget(key).bind(Event.MouseLeftClick,eventAdaptor(method,**kwargs))
+
+    def rebindClickMethod(self,key:str,method,**kwargs)->None:
+        """重新绑定点击事件"""
+        widget = self.getWidget(key)
+        widget.unbind(Event.MouseLeftClick)
+        widget.bind(Event.MouseLeftClick,eventAdaptor(method,**kwargs))
