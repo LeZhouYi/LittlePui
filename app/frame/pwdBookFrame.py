@@ -342,7 +342,7 @@ class PwdBookFrame(BaseFrame):
 
     def loadFullGroup(self, groupKey)->None:
         """加载特定组完整内容"""
-        self.loadSingleGroup(groupKey)
+        self.loadSingleGroup(groupKey,isDisplay=True)
         group = self.passwordBook.getGroup(groupKey)
         for envKey in group.keys():
             self.loadFullEnv(groupKey,envKey)
@@ -350,15 +350,16 @@ class PwdBookFrame(BaseFrame):
     def loadFullEnv(self,groupKey:str,envKey:str)->None:
         """加载特定Env完整内容"""
         group = self.passwordBook.getGroup(groupKey)
-        self.loadSingleEnv(groupKey, envKey)
+        self.loadSingleEnv(groupKey, envKey, isDisplay=True)
         for pwdData in group[envKey]:
             self.loadSingleData(groupKey, envKey, pwdData)
 
-    def loadSingleGroup(self, groupKey) -> None:
+    def loadSingleGroup(self, groupKey,isDisplay:bool=False) -> None:
         """加载特定组"""
         frameKey = self.createWidget("pwdContentFrame","pwdSingleFrame",None,groupKey)
         lineFrameKey = self.createWidget(frameKey,"pwdLine",None,groupKey)
-        packBtnKey = self.createWidget(lineFrameKey,"pwdBtn",self.getImgInfo("display"),groupKey,"pack")
+        packIconInfo = "pack" if isDisplay else "display"
+        packBtnKey = self.createWidget(lineFrameKey,"pwdBtn",self.getImgInfo(packIconInfo),groupKey,"pack")
         addBtnKey = self.createWidget(lineFrameKey,"pwdBtn",self.getImgInfo("add"),groupKey,"add")
         editBtnKey = self.createWidget(lineFrameKey,"pwdBtn",self.getImgInfo("edit"),groupKey,"edit")
         delBtnKey = self.createWidget(lineFrameKey,"pwdBtn",self.getImgInfo("delete"),groupKey,"del")
@@ -370,12 +371,13 @@ class PwdBookFrame(BaseFrame):
                     "widget": frameKey,
                     "method": self.clickDeleteGroup,
                 })
-        self.bindClickMethod(packBtnKey,self.clickDisplayGroup, groupKey=groupKey)
+        packMethod = self.clickPackGroup if isDisplay else self.clickDisplayGroup
+        self.bindClickMethod(packBtnKey,packMethod, groupKey=groupKey)
+        self.bindClickMethod(labelKey,packMethod,groupKey=groupKey)
         self.bindClickMethod(editBtnKey,self.loadEditGroupDialog, groupKey=groupKey)
         self.bindClickMethod(addBtnKey,self.loadAddGroupDialog)
-        self.bindClickMethod(labelKey,self.clickDisplayGroup,groupKey=groupKey)
 
-    def loadSingleEnv(self, groupKey: str, envKey: str) -> None:
+    def loadSingleEnv(self, groupKey: str, envKey: str,isDisplay:bool=False) -> None:
         """加载特定Env"""
         pwdSingleFrameKey = self.createKey("pwdSingleFrame", groupKey)
         envSuffix = self.createKey(groupKey, envKey)
@@ -383,7 +385,8 @@ class PwdBookFrame(BaseFrame):
         frameKey = self.createWidget(pwdSingleFrameKey,"pwdEnvFrame",None,envSuffix)
         self.createWidget(frameKey, "pwdEmptyLabel",None, envSuffix)
         lineFrameKey = self.createWidget(frameKey, "pwdEnvLineFrame",None, envSuffix)
-        packBtnKey = self.createWidget(lineFrameKey, "pwdEnvBtn",self.getImgInfo("display"),envSuffix, "pack")
+        packIconInfo = "pack" if isDisplay else "display"
+        packBtnKey = self.createWidget(lineFrameKey, "pwdEnvBtn",self.getImgInfo(packIconInfo),envSuffix, "pack")
         addBtnKey = self.createWidget(lineFrameKey, "pwdEnvBtn",self.getImgInfo("add"),envSuffix, "add")
         editBtnKey = self.createWidget(lineFrameKey, "pwdEnvBtn",self.getImgInfo("edit"),envSuffix, "edit")
         delBtnKey = self.createWidget(lineFrameKey, "pwdEnvBtn",self.getImgInfo("delete"),envSuffix, "del")
@@ -397,9 +400,10 @@ class PwdBookFrame(BaseFrame):
                     "widget": frameKey,
                     "method": self.clickDeleteEnv,
                 })
-        self.bindClickMethod(packBtnKey,self.clickDisplayEnv, groupKey=groupKey, envKey=envKey)
+        packMethod = self.clickPackEnv if isDisplay else self.clickDisplayEnv
+        self.bindClickMethod(labelKey,packMethod, groupKey=groupKey, envKey=envKey)
+        self.bindClickMethod(packBtnKey,packMethod, groupKey=groupKey, envKey=envKey)
         self.bindClickMethod(addBtnKey,self.loadAddEnvDialog, groupKey=groupKey)
-        self.bindClickMethod(labelKey,self.clickDisplayEnv, groupKey=groupKey, envKey=envKey)
 
     def loadSingleData(self, groupKey: str, envKey: str, pwdData: dict) -> None:
         """加载特定密码数据"""
