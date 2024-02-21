@@ -102,3 +102,13 @@ class InputDialog(ComfirmDialog):
         if key not in self.keySet:
             raise Exception("键名%s不存在" % key)
         return self.getWidget(self.keySet[key]).get()
+
+    def focusEntry(self,key:str=None)->None:
+        """使输入框获得焦点，若Key为None则默认为第一个，若不存在输入框则不处理"""
+        if len(self.keySet)>0:
+            if key == None:
+                for dictKey, dictValue in self.keySet.items():
+                    key = dictKey
+                    break
+            if key in self.keySet:
+                self.getWidget(self.keySet[key]).focus_set()

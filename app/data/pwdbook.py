@@ -33,6 +33,8 @@ class PwdBook:
         """删除组及其数据"""
         if groupKey in self.data:
             self.data.pop(groupKey)
+        if len(self.data)==0:
+            self.addGroup("default")
 
     def deletetEnv(self, groupKey: str, envKey: str) -> None:
         """删除Env及其数据"""

@@ -9,7 +9,6 @@ from core.utils import utils
 from app.data.pwdbook import PwdBook
 from core.frame.absFrame import BaseFrame
 from core.frame.absDialog import ComfirmDialog,InputDialog
-from core.control.event import Event
 from core.control.controller import Controller
 
 """密码内容页"""
@@ -55,16 +54,20 @@ class PwdBookFrame(BaseFrame):
             labelText = []
         else:
             labelText = labelText.split("、")
-        pwdData["labels"]=labelText
-        pwdData["account"]=self.dialog.getEntryValue("account")
-        pwdData["password"]=self.dialog.getEntryValue("password")
-        pwdData["website"]=self.dialog.getEntryValue("website")
-        self.passwordBook.editData(groupKey,envKey,pwdData)
+        newData = {
+            "id": pwdData["id"],
+            "account": self.dialog.getEntryValue("account"),
+            "password": self.dialog.getEntryValue("password"),
+            "website": self.dialog.getEntryValue("website"),
+            "labels":labelText
+        }
+        self.passwordBook.editData(groupKey,envKey,newData)
         self.passwordBook.writeToFile()
-        lineFrameKey = self.createKey("pwdDataFrame",pwdData["id"])
+        lineFrameKey = self.createKey("pwdDataFrame",newData["id"])
         self.destroyWidget(lineFrameKey)
-        self.loadSingleData(groupKey,envKey,pwdData)
+        self.loadSingleData(groupKey,envKey,newData)
         self.dialog.closeDialog(event)
+        self.updatePwdPage()
 
     def clickAddData(self,event,groupKey:str,envKey:str)->None:
         """点击确认添加数据"""
@@ -223,7 +226,7 @@ class PwdBookFrame(BaseFrame):
         self.getWidget(packBtnKey).configure(image=self.getImage("display", "pwdbookIcon"))
         self.rebindClickMethod(packBtnKey,self.clickDisplayEnv, groupKey=groupKey, envKey=envKey)
         labelKey = self.createKey("pwdEnvLabel",suffix)
-        self.rebindClickMethod(labelKey,self.clickPackEnv, groupKey=groupKey, envKey=envKey)
+        self.rebindClickMethod(labelKey,self.clickDisplayEnv, groupKey=groupKey, envKey=envKey)
         self.updatePwdPage()
 
     def clickDisplayEnv(self, event, groupKey: str, envKey: str) -> None:
@@ -257,6 +260,7 @@ class PwdBookFrame(BaseFrame):
             labelsText = "%s、%s"%(labelsText,label)
         self.dialog.addEntry("labels", "labels",labelsText[1:])
         self.dialog.bindYesMethod(self.clickEditData,groupKey=groupKey,envKey=envKey,pwdData=pwdData)
+        self.dialog.focusEntry()
         self.dialog.packDialog()
 
     def loadAddDataDialog(self,event,groupKey:str,envKey:str)->None:
@@ -268,6 +272,7 @@ class PwdBookFrame(BaseFrame):
         self.dialog.addEntry("website", "website")
         self.dialog.addEntry("labels", "labels")
         self.dialog.bindYesMethod(self.clickAddData,groupKey=groupKey,envKey=envKey)
+        self.dialog.focusEntry()
         self.dialog.packDialog()
 
     def loadAddEnvDialog(self, event,groupKey:str)->None:
@@ -276,6 +281,7 @@ class PwdBookFrame(BaseFrame):
         self.dialog.loadDialog("请输入Env")
         self.dialog.addEntry("env",None)
         self.dialog.bindYesMethod(self.clickAddEnv,groupKey=groupKey)
+        self.dialog.focusEntry()
         self.dialog.packDialog()
 
     def loadAddGroupDialog(self, event)->None:
@@ -284,6 +290,7 @@ class PwdBookFrame(BaseFrame):
         self.dialog.loadDialog("请输入组名")
         self.dialog.addEntry("group",None)
         self.dialog.bindYesMethod(self.clickAddGroup)
+        self.dialog.focusEntry()
         self.dialog.packDialog()
 
     def loadEditEnvDialog(self, event, groupKey: str, envKey: str) -> None:
@@ -292,6 +299,7 @@ class PwdBookFrame(BaseFrame):
         self.dialog.loadDialog("请输入Env名")
         self.dialog.addEntry("env",None,envKey)
         self.dialog.bindYesMethod(self.clickComfirmEnv,groupKey=groupKey,envKey=envKey)
+        self.dialog.focusEntry()
         self.dialog.packDialog()
 
     def loadEditGroupDialog(self, event, groupKey: str) -> None:
@@ -300,6 +308,7 @@ class PwdBookFrame(BaseFrame):
         self.dialog.loadDialog("请输入组名")
         self.dialog.addEntry("group",None,groupKey)
         self.dialog.bindYesMethod(self.clickComfirmGroup, groupKey=groupKey)
+        self.dialog.focusEntry()
         self.dialog.packDialog()
 
     def completeBtn(self, btnKey: str, controlKey: str) -> None:
